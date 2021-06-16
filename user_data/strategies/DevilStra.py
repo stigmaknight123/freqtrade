@@ -544,19 +544,19 @@ class DevilStra(IStrategy):
 
     # Sell hyperspace params:
     sell_params = {
-        "sell_spell": "La,La,Lu,La,Lu,Lu,Cu,Pa,Si,Cu,Pa,De,Lu,La,Lu,Cu,Ra,Ra,Pa,Pa,Lu,Cu,Si,Zi,De,Gu,Ra,Gu,De,Ra,Si,Si,Zi,Si,Ra,Zi,Cu,Si,Pa,Pa,Ra,La,Cu,Gu,Pa,Zi,Lu,Cu,Lu,Si,Zi",
+        "sell_spell": "La,Lu,Ra,Ra,Pa,Pa,Ra,Ra,Ra,Cu,La,Lu,De,La,Zi,Ra,Lu,Pa,Si,Gu,La,Cu,Pa,Gu,Pa,La,De,Si,Si,Lu,Pa,Si,Zi,La,Lu,La,La,Si,Lu,Lu,Si,Zi,La,De,De,Gu,Cu,De,Cu,Zi,Cu",
     }
 
     # ROI table:
     minimal_roi = {
-        "0": 0.574,
-        "1757": 0.158,
-        "3804": 0.089,
-        "6585": 0
+        "0": 0.287,
+        "1673": 0.213,
+        "3010": 0.088,
+        "7450": 0
     }
 
     # Stoploss:
-    stoploss = -0.28
+    stoploss = -0.025
     # #################### END OF RESULT PLACE ####################
 
     # 𝖂𝖔𝖗𝖘𝖙, 𝖀𝖓𝖎𝖉𝖊𝖆𝖑, 𝕾𝖚𝖇𝖔𝖕𝖙𝖎𝖒𝖆𝖑, 𝕸𝖆𝖑𝖆𝖕𝖗𝖔𝖕𝖔𝖘 𝕬𝖓𝖉 𝕯𝖎𝖘𝖒𝖆𝖑 𝖙𝖎𝖒𝖊𝖋𝖗𝖆𝖒𝖊 𝖋𝖔𝖗 𝖙𝖍𝖎𝖘 𝖘𝖙𝖗𝖆𝖙𝖊𝖌𝖞:
