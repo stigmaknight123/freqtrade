@@ -2,14 +2,15 @@
 version: '3'
 services:
   freqtrade:
+    image: freqtrade_custom
     # image: freqtradeorg/freqtrade:stable
-    image: freqtradeorg/freqtrade:develop
+    # image: freqtradeorg/freqtrade:develop
     # Use plotting image
     # image: freqtradeorg/freqtrade:develop_plot
     # Build step - only needed when additional dependencies are needed
-    # build:
-    #   context: .
-    #   dockerfile: "./docker/Dockerfile.custom"
+    build:
+      context: .
+      dockerfile: "./docker/Dockerfile.custom"
     restart: unless-stopped
     container_name: freqtrade
     volumes:
@@ -20,6 +21,8 @@ services:
     # ports:
     #   - "127.0.0.1:8080:8080"
     # Default command used when running `docker compose up`
+    # If you want to use static list, remove atur-binance.json
+    # and rename config.json to config-static.json
     command: >
       trade
       --logfile /freqtrade/user_data/logs/freqtrade.log
