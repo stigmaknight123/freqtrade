@@ -28,7 +28,7 @@ from pandas import DataFrame
 
 # ########################## SETTINGS ##############################
 # pairlist lenght(use exact count of pairs you used in whitelist size+1):
-PAIR_LIST_LENGHT = 269
+PAIR_LIST_LENGHT = 51
 # you can find exact value of this inside GodStraNew
 TREND_CHECK_CANDLES = 4
 # Set the pain range of devil(2~9999)
