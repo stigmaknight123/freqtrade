@@ -14,17 +14,23 @@ mkdir docker
 cd docker/
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/docker/Dockerfile.custom
 cd ..
-sudo rm docker-compose.yml
-sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/docker-compose.yml
+DIRECTORY=/user_data/
+if [ ! -d "$DIRECTORY" ]; then
+  mkdir user_data
+fi
 cd user_data/
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/atur-telegram.json
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/atur-binance.json
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/config-static.json
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/config.json
+DIRECTORY=/strategies/
+if [ ! -d "$DIRECTORY" ]; then
+  mkdir strategies
+fi
 cd strategies/
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/DevilStra.py
 sudo wget https://raw.githubusercontent.com/freqtrade/freqtrade-strategies/master/user_data/strategies/GodStra.py
-sudo wget https://raw.githubusercontent.com/freqtrade/freqtrade-strategies/master/user_data/strategies/GodStraNew.py
+sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/GodStraNew.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/CombinedBinHAndClucV8.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/NostalgiaForInfinityV4.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/CombinedBinHAndClucV8XH.py
