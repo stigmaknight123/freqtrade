@@ -450,53 +450,52 @@ def condition_generator(dataframe, operator, indicator, crossed_indicator, real_
 
 class GodStraNewOpt(IStrategy):
     # #################### RESULTS PASTE PLACE ####################
-    #54/100:     71 trades. 48/20/3 Wins/Draws/Losses. Avg profit   8.58%. Median profit   8.16%. Total profit  313.71477874 USDT ( 570.39%). Avg duration 2 days, 16:10:00 min. Objective: -10.35948
+    #  67/100:     55 trades. 35/18/2 Wins/Draws/Losses. Avg profit   6.47%. Median profit   4.66%. Total profit  112.08506505 USDT ( 203.79%). Avg duration 4 days, 5:19:00 min. Objective: -5.13037
 
     # Buy hyperspace params:
     buy_params = {
-        "buy_crossed_indicator0": "SMA-6",
-        "buy_crossed_indicator1": "SMA-12",
-        "buy_crossed_indicator2": "SMA-50",
-        "buy_indicator0": "SMA-12",
-        "buy_indicator1": "SMA-110",
-        "buy_indicator2": "SMA-100",
-        "buy_operator0": "<R",
-        "buy_operator1": "/<R",
-        "buy_operator2": "D",
-        "buy_real_num0": 0.8,
-        "buy_real_num1": 0.6,
-        "buy_real_num2": 0.1,
+        "buy_crossed_indicator0": "SMA-110",
+        "buy_crossed_indicator1": "SMA-100",
+        "buy_crossed_indicator2": "SMA-110",
+        "buy_indicator0": "SMA-55",
+        "buy_indicator1": "SMA-50",
+        "buy_indicator2": "SMA-6",
+        "buy_operator0": ">",
+        "buy_operator1": "/>R",
+        "buy_operator2": "<R",
+        "buy_real_num0": 0.5,
+        "buy_real_num1": 0.3,
+        "buy_real_num2": 0.7,
     }
 
     # Sell hyperspace params:
     sell_params = {
-        "sell_crossed_indicator0": "SMA-12",
-        "sell_crossed_indicator1": "SMA-5",
+        "sell_crossed_indicator0": "SMA-15",
+        "sell_crossed_indicator1": "SMA-12",
         "sell_crossed_indicator2": "SMA-6",
-        "sell_indicator0": "SMA-5",
-        "sell_indicator1": "SMA-50",
-        "sell_indicator2": "SMA-5",
-        "sell_operator0": "<R",
-        "sell_operator1": "UT",
-        "sell_operator2": "OT",
-        "sell_real_num0": 0.4,
-        "sell_real_num1": 0.4,
-        "sell_real_num2": 0.3,
+        "sell_indicator0": "SMA-15",
+        "sell_indicator1": "SMA-12",
+        "sell_indicator2": "SMA-12",
+        "sell_operator0": "<",
+        "sell_operator1": "<R",
+        "sell_operator2": "<",
+        "sell_real_num0": 0.1,
+        "sell_real_num1": 1.0,
+        "sell_real_num2": 0.5,
     }
 
     # ROI table:
     minimal_roi = {
-        "0": 0.05,
-        "20": 0.04,
-        "40": 0.03,
-        "60": 0.02,
-        "80": 0.01
+        "0": 0.573,
+        "618": 0.312,
+        "3085": 0.115,
+        "4396": 0
     }
 
     # Trailing stop:
     trailing_stop = True
-    trailing_stop_positive = 0.211
-    trailing_stop_positive_offset = 0.263
+    trailing_stop_positive = 0.197
+    trailing_stop_positive_offset = 0.266
     trailing_only_offset_is_reached = False
     # #################### END OF RESULT PLACE ####################
 
