@@ -7,13 +7,13 @@ sudo apt-get update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-compose python3-pip
 mkdir ft_userdata
 cd ft_userdata/
-curl https://raw.githubusercontent.com/stash86/freqtrade/develop/docker-compose.yml -o docker-compose.yml
-sudo docker-compose pull
-sudo docker-compose run --rm freqtrade create-userdir --userdir user_data
 mkdir docker
 cd docker/
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/docker/Dockerfile.custom
 cd ..
+curl https://raw.githubusercontent.com/stash86/freqtrade/develop/docker-compose.yml -o docker-compose.yml
+sudo docker-compose pull
+sudo docker-compose run --rm freqtrade create-userdir --userdir user_data
 DIRECTORY=/user_data/
 if [ ! -d "$DIRECTORY" ]; then
   mkdir user_data
