@@ -5,8 +5,8 @@
         "chat_id": "",
         "keyboard": [
             ["/profit","/balance","/status table","/daily"],
-            ["/count","/logs","/help","/whitelist"],
-            ["/reload_config","/start","/stop"]
+            ["/count","/logs","/show_config","/whitelist"],
+            ["/reload_config","/help","/start","/stop"]
         ],
         "notification_settings": {
             "status": "silent",
