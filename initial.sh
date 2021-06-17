@@ -31,10 +31,10 @@ cd strategies/
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/DevilStra.py
 sudo wget https://raw.githubusercontent.com/freqtrade/freqtrade-strategies/master/user_data/strategies/GodStra.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/GodStraNew.py
+sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/GodStraNewOpt.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/CombinedBinHAndClucV8.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/NostalgiaForInfinityV4.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/CombinedBinHAndClucV8XH.py
-sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/CombinedBinHClucAndMADV6.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/SMAOffsetProtectOptV1.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/SMAOffsetProtectOptV1_opt.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/CombinedBinHClucAndMADV9.py
