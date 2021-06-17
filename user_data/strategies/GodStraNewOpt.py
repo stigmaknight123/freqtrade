@@ -470,18 +470,18 @@ class GodStraNewOpt(IStrategy):
 
     # Sell hyperspace params:
     sell_params = {
-        "sell_crossed_indicator0": "SMA-50",
-        "sell_crossed_indicator1": "SMA-100",
-        "sell_crossed_indicator2": "SMA-100",
+        "sell_crossed_indicator0": "SMA-12",
+        "sell_crossed_indicator1": "SMA-5",
+        "sell_crossed_indicator2": "SMA-6",
         "sell_indicator0": "SMA-5",
-        "sell_indicator1": "SMA-15",
-        "sell_indicator2": "SMA-55",
-        "sell_operator0": "<",
-        "sell_operator1": "CUT",
+        "sell_indicator1": "SMA-50",
+        "sell_indicator2": "SMA-5",
+        "sell_operator0": "<R",
+        "sell_operator1": "UT",
         "sell_operator2": "OT",
-        "sell_real_num0": 0.0,
-        "sell_real_num1": 0.8,
-        "sell_real_num2": 0.1,
+        "sell_real_num0": 0.4,
+        "sell_real_num1": 0.4,
+        "sell_real_num2": 0.3,
     }
 
     # ROI table:
@@ -495,9 +495,9 @@ class GodStraNewOpt(IStrategy):
 
     # Trailing stop:
     trailing_stop = True
-    trailing_stop_positive = 0.024
-    trailing_stop_positive_offset = 0.106
-    trailing_only_offset_is_reached = True
+    trailing_stop_positive = 0.211
+    trailing_stop_positive_offset = 0.263
+    trailing_only_offset_is_reached = False
     # #################### END OF RESULT PLACE ####################
 
     # TODO: Its not dry code!
