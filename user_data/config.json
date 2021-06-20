@@ -12,7 +12,17 @@
         "buy": 10,
         "sell": 30
     },
+    "order_types": {
+        "buy": "market",
+        "sell": "market",
+        "emergencysell": "market",
+        "trailing_stop_loss": "market",
+        "stoploss": "market",
+        "stoploss_on_exchange": false,
+        "stoploss_on_exchange_interval": 60
+    },
     "bid_strategy": {
+        "price_side": "ask",
         "ask_last_balance": 0.0,
         "use_order_book": false,
         "order_book_top": 1,
@@ -22,6 +32,7 @@
         }
     },
     "ask_strategy": {
+        "price_side": "bid",
         "use_order_book": false,
         "order_book_min": 1,
         "order_book_max": 1
@@ -29,16 +40,16 @@
     "pairlists": [
         {
             "method": "VolumePairList",
-            "number_assets": 100,
+            "number_assets": 70,
             "sort_key": "quoteVolume"
         },
         {"method": "AgeFilter", "min_days_listed": 10},
         {
             "method": "VolatilityFilter",
-            "lookback_days": 3,
+            "lookback_days": 4,
             "min_volatility": 0.02,
-            "max_volatility": 0.25,
-            "refresh_period": 3600
+            "max_volatility": 0.75,
+            "refresh_period": 36000
         },
         {"method": "SpreadFilter", "max_spread_ratio": 0.005},
         {
@@ -48,12 +59,7 @@
             "refresh_period": 1440
         },
         {"method": "PerformanceFilter"},
-        {"method": "PriceFilter", "low_price_ratio": 0.001},
-        {
-            "method": "VolumePairList",
-            "number_assets": 50,
-            "sort_key": "quoteVolume"
-        }
+        {"method": "PriceFilter", "low_price_ratio": 0.01}
     ],
     "edge": {
         "enabled": false,
@@ -70,18 +76,18 @@
         "remove_pumps": false
     },
     "api_server": {
-        "enabled": false,
+        "enabled": true,
         "listen_ip_address": "0.0.0.0",
         "listen_port": 8080,
         "verbosity": "error",
-        "jwt_secret_key": "Stef4n0@Fr3qtr4d3",
+        "jwt_secret_key": "123",
         "CORS_origins": [],
-        "username": "freqtrader",
-        "password": "Stef4n0@Fr3qtr4d3"
+        "username": "lala",
+        "password": "321"
     },
     "bot_name": "freqtrade_binance_stef",
     "initial_state": "running",
-    "forcebuy_enable": false,
+    "forcebuy_enable": true,
     "internals": {
         "process_throttle_secs": 5
     }
