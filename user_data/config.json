@@ -6,7 +6,7 @@
     "tradable_balance_ratio": 0.99,
     "fiat_display_currency": "USD",
     "dry_run": true,
-    "dry_run_wallet": 57,
+    "dry_run_wallet": 50,
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
         "buy": 10,
@@ -43,7 +43,7 @@
             "number_assets": 70,
             "sort_key": "quoteVolume"
         },
-        {"method": "AgeFilter", "min_days_listed": 10},
+        {"method": "AgeFilter", "min_days_listed": 20},
         {
             "method": "VolatilityFilter",
             "lookback_days": 4,
@@ -59,7 +59,7 @@
             "refresh_period": 1440
         },
         {"method": "PerformanceFilter"},
-        {"method": "PriceFilter", "low_price_ratio": 0.01}
+        {"method": "PriceFilter", "low_price_ratio": 0.001}
     ],
     "edge": {
         "enabled": false,
@@ -76,18 +76,18 @@
         "remove_pumps": false
     },
     "api_server": {
-        "enabled": true,
+        "enabled": false,
         "listen_ip_address": "0.0.0.0",
         "listen_port": 8080,
         "verbosity": "error",
-        "jwt_secret_key": "123",
+        "jwt_secret_key": "00",
         "CORS_origins": [],
-        "username": "lala",
-        "password": "321"
+        "username": "11",
+        "password": "22"
     },
     "bot_name": "freqtrade_binance_stef",
     "initial_state": "running",
-    "forcebuy_enable": true,
+    "forcebuy_enable": false,
     "internals": {
         "process_throttle_secs": 5
     }
