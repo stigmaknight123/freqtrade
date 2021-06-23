@@ -25,6 +25,7 @@ if [ ! -d "$DIRECTORY" ]; then
   mkdir strategies
 fi
 cd strategies/
+sudo wget https://raw.githubusercontent.com/froggleston/cryptofrog-strategies/main/CryptoFrog.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/DevilStra.py
 sudo wget https://raw.githubusercontent.com/freqtrade/freqtrade-strategies/master/user_data/strategies/GodStra.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/GodStraNew.py
