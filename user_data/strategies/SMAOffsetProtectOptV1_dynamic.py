@@ -1,6 +1,6 @@
 # --- Do not remove these libs ---
 from freqtrade.strategy.interface import IStrategy
-from typing import Dict, List
+from typing import Dict, List, Optional, Tuple
 from functools import reduce
 from pandas import DataFrame
 # --------------------------------
