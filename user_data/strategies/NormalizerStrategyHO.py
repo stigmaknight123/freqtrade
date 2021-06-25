@@ -49,27 +49,30 @@ from datetime import datetime, timedelta
 
 # Buy hyperspace params:
 buy_params = {
-    "base_nb_candles_buy": 16,
-    "ewo_high": 5.638,
-    "ewo_low": -19.993,
-    "low_offset": 0.978,
-    "rsi_buy": 61,
+    "base_nb_candles_buy": 10,
+    "ewo_high": 9.568,
+    "ewo_low": -9.233,
+    "low_offset": 0.973,
+    "rsi_buy": 53,
 }
-
 # Sell hyperspace params:
 sell_params = {
-    "base_nb_candles_sell": 49,
-    "high_offset": 1.006,
+    "base_nb_candles_sell": 59,
+    "high_offset": 1.084,
 }
 
 class NormalizerStrategyHO(IStrategy):
     INTERFACE_VERSION = 2
 
+    # ROI table:
     minimal_roi = {
-        "0": 0.18
+        "0": 0.354,
+        "241": 0.222,
+        "743": 0.088,
+        "1956": 0
     }
-
-    stoploss = -0.99 # effectively disabled.
+    # Stoploss:
+    stoploss = -0.34
 
     timeframe = '1h'
 
@@ -93,15 +96,15 @@ class NormalizerStrategyHO(IStrategy):
 
     # Sell signal
     use_sell_signal = True
-    sell_profit_only = True
+    sell_profit_only = False
     sell_profit_offset = 0.001 # it doesn't meant anything, just to guarantee there is a minimal profit.
     ignore_roi_if_buy_signal = True
 
-    # Trailing stoploss
+    # Trailing stop:
     trailing_stop = True
+    trailing_stop_positive = 0.146
+    trailing_stop_positive_offset = 0.15
     trailing_only_offset_is_reached = True
-    trailing_stop_positive = 0.01
-    trailing_stop_positive_offset = 0.015
 
     # Custom stoploss
     use_custom_stoploss = True
