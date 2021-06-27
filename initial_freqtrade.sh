@@ -25,6 +25,7 @@ if [ ! -d "$DIRECTORY" ]; then
   mkdir strategies
 fi
 cd strategies/
+sudo wget https://raw.githubusercontent.com/i1ya/freqtrade-strategies/main/BigZ03/BigZ03.py
 sudo wget https://raw.githubusercontent.com/froggleston/cryptofrog-strategies/main/CryptoFrog.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/DevilStra.py
 sudo wget https://raw.githubusercontent.com/freqtrade/freqtrade-strategies/master/user_data/strategies/GodStra.py
@@ -36,7 +37,7 @@ sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/NostalgiaForInfinityV3.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/NostalgiaForInfinityV4.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/NostalgiaForInfinityV5.py
-sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/NostalgiaForInfinityV5_ProfitOnly.py
+sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/NostalgiaForInfinityV5MultiOffsetAndHO.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/NormalizerStrategy.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/CombinedBinHAndClucV8XH.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/SMAOffsetProtectOptV1.py
