@@ -85,10 +85,14 @@
         "username": "11",
         "password": "22"
     },
-    "bot_name": "freqtrade_binance_stef",
+    "bot_name": "freqtrade_bot",
     "initial_state": "running",
     "forcebuy_enable": false,
     "internals": {
         "process_throttle_secs": 5
-    }
+    },
+    "db_url": "sqlite:////freqtrade/user_data/tradesv3.sqlite",
+    "user_data_dir" : "user_data",
+    "strategy": "SampleStrategy",
+    "strategy_path": "user_data/strategies"
 }

@@ -43,7 +43,7 @@ class SMAOffsetProtectOptV1(IStrategy):
 
     # ROI table:
     minimal_roi = {
-        "0": 0.01
+        "0": 0.013
     }
 
     # Stoploss:
@@ -79,7 +79,7 @@ class SMAOffsetProtectOptV1(IStrategy):
     use_sell_signal = True
     sell_profit_only = False
     sell_profit_offset = 0.01
-    ignore_roi_if_buy_signal = True
+    ignore_roi_if_buy_signal = False
 
     # Optimal timeframe for the strategy
     timeframe = '5m'
