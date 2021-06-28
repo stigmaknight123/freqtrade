@@ -1,12 +1,12 @@
 {
-    "max_open_trades": 3,
+    "max_open_trades": 4,
     "stake_currency": "USDT",
     "stake_amount" : "unlimited",
     "amend_last_stake_amount ": true,
     "tradable_balance_ratio": 0.99,
     "fiat_display_currency": "USD",
     "dry_run": true,
-    "dry_run_wallet": 55,
+    "dry_run_wallet": 65,
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
         "buy": 10,
@@ -170,7 +170,7 @@
         "max_trade_duration_minute": 1440,
         "remove_pumps": false
     },
-    "bot_name": "freqtrade_binance_stef",
+    "bot_name": "freqtrade_bot",
     "initial_state": "running",
     "forcebuy_enable": false,
     "internals": {
