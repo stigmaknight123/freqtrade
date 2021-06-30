@@ -1,4 +1,3 @@
-mkdir ft_userdata
 cd ft_userdata/
 curl https://raw.githubusercontent.com/freqtrade/freqtrade/develop/docker-compose.yml -o docker-compose.yml
 sudo docker-compose pull

@@ -1,4 +1,3 @@
-mkdir ft_userdata
 cd ft_userdata/
 mkdir docker
 cd docker/

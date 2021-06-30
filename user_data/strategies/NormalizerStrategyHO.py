@@ -49,16 +49,17 @@ from datetime import datetime, timedelta
 
 # Buy hyperspace params:
 buy_params = {
-    "base_nb_candles_buy": 10,
-    "ewo_high": 9.568,
-    "ewo_low": -9.233,
-    "low_offset": 0.973,
+    "base_nb_candles_buy": 36,
+    "ewo_high": 8.032,
+    "ewo_low": -18.895,
+    "low_offset": 0.931,
     "rsi_buy": 53,
 }
+
 # Sell hyperspace params:
 sell_params = {
-    "base_nb_candles_sell": 59,
-    "high_offset": 1.084,
+    "base_nb_candles_sell": 80,
+    "high_offset": 1.011,
 }
 
 class NormalizerStrategyHO(IStrategy):
