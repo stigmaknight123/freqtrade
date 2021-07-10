@@ -38,7 +38,12 @@
         "order_book_max": 1
     },
     "pairlists": [
-        {"method": "StaticPairList"}
+        {"method": "StaticPairList"},
+        {
+            "method": "VolumePairList",
+            "number_assets": 70,
+            "sort_key": "quoteVolume"
+        }
     ],
     "exchange": {
         "name": "binance",
