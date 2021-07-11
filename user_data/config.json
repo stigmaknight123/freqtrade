@@ -1,11 +1,11 @@
 {
-    "max_open_trades": 3,
-    "stake_currency": "USDT",
+    "max_open_trades": 2,
+    "stake_currency": "BUSD",
     "stake_amount" : "unlimited",
     "amend_last_stake_amount ": true,
     "tradable_balance_ratio": 0.99,
     "fiat_display_currency": "USD",
-    "dry_run": true,
+    "dry_run": false,
     "dry_run_wallet": 50,
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
@@ -43,7 +43,7 @@
             "number_assets": 70,
             "sort_key": "quoteVolume"
         },
-        {"method": "AgeFilter", "min_days_listed": 20},
+        {"method": "AgeFilter", "min_days_listed": 30},
         {
             "method": "VolatilityFilter",
             "lookback_days": 4,
@@ -59,7 +59,7 @@
             "refresh_period": 1440
         },
         {"method": "PerformanceFilter"},
-        {"method": "PriceFilter", "low_price_ratio": 0.001}
+        {"method": "PriceFilter", "low_price_ratio": 0.01}
     ],
     "edge": {
         "enabled": false,
