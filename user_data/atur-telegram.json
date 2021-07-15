@@ -16,8 +16,8 @@
             "sell": "silent",
             "buy_cancel": "silent",
             "sell_cancel": "silent",
-            "buy_fill": "silent",
-            "sell_fill": "silent"
+            "buy_fill": "off",
+            "sell_fill": "off"
         },
         "balance_dust_level": 0.01
     }
