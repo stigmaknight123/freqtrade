@@ -25,6 +25,9 @@ if [ ! -d "$DIRECTORY" ]; then
 fi
 cd strategies/
 sudo wget https://raw.githubusercontent.com/i1ya/freqtrade-strategies/main/BigZ03/BigZ03.py
+sudo wget https://raw.githubusercontent.com/i1ya/freqtrade-strategies/main/BigZ04/BigZ04.py
+sudo wget https://raw.githubusercontent.com/i1ya/freqtrade-strategies/main/BigZ06/BigZ06.py
+sudo wget https://raw.githubusercontent.com/i1ya/freqtrade-strategies/main/BigZ07/BigZ07.py
 sudo wget https://raw.githubusercontent.com/froggleston/cryptofrog-strategies/main/CryptoFrog.py
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/strategies/DevilStra.py
 sudo wget https://raw.githubusercontent.com/freqtrade/freqtrade-strategies/master/user_data/strategies/GodStra.py
