@@ -173,20 +173,6 @@ class BigZ07_fix(IStrategy):
         return True
 
 
-    def custom_sell(self, pair: str, trade: 'Trade', current_time: 'datetime', current_rate: float,
-                    current_profit: float, **kwargs):
-
-        dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
-        last_candle = dataframe.iloc[-1].squeeze()
-        last_candle_2 = dataframe.iloc[-2].squeeze()
-
-        if (last_candle is not None):
-            if (last_candle['high'] > last_candle['bb_upperband']) & (last_candle['volume'] > (last_candle_2['volume'] * 1.5)):
-                return 'sell_signal_1'
-
-        return False
-
-
     def custom_stoploss(self, pair: str, trade: 'Trade', current_time: datetime,
                         current_rate: float, current_profit: float, **kwargs) -> float:
         # Manage losing trades and open room for better ones.
