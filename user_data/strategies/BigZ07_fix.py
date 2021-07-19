@@ -187,22 +187,20 @@ class BigZ07_fix(IStrategy):
                     number_of_candle_shift = int((current_time - trade_time_50).total_seconds() / 300)
                     dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
                     current_candle = dataframe.iloc[-1].squeeze()
-                    candle_time_50 = dataframe.iloc[-number_of_candle_shift].squeeze()
 
                     # We are at bottom. Wait...
                     if current_candle['rsi'] < 40:
-                        return 0.07  
+                        return 0.99
+                    if current_candle['open_1h'] > current_candle['ema_200_1h']:
+                        return 0.1
                     # Are we still sinking? 
-                    if current_candle['close'] > current_candle['ema_200']:
-                        if current_rate * 1.025 < candle_time_50['open']:
-                            return 0.01 
-                    elif current_rate * 1.015 < candle_time_50['open']:
-                        return 0.01
+                    if current_rate * 1.025 < current_candle['open']:
+                        return 0.01 
 
                 except IndexError as error:
                     # Whoops, set stoploss at 10%
                     return 0.1
-        return 0.07
+        return 0.99
 
     def informative_pairs(self):
         pairs = self.dp.current_whitelist()
