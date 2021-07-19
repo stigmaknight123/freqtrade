@@ -162,11 +162,8 @@ class BigZ07_fix(IStrategy):
                            rate: float, time_in_force: str, sell_reason: str, **kwargs) -> bool:
 
 
-        return True
-
         dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
         last_candle = dataframe.iloc[-1].squeeze()
-        last_candle_1 = dataframe.iloc[-2].squeeze()
 
         if (sell_reason == 'roi'):
             # Looks like we can get a little have more
@@ -178,8 +175,6 @@ class BigZ07_fix(IStrategy):
 
     def custom_sell(self, pair: str, trade: 'Trade', current_time: 'datetime', current_rate: float,
                     current_profit: float, **kwargs):
-
-        return False
 
         dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
         last_candle = dataframe.iloc[-1].squeeze()
@@ -215,7 +210,7 @@ class BigZ07_fix(IStrategy):
                     if current_candle['close'] > current_candle['ema_200']:
                         if current_rate * 1.025 < candle_time_50['open']:
                             return 0.01 
-                    if current_rate * 1.015 < candle_time_50['open']:
+                    elif current_rate * 1.015 < candle_time_50['open']:
                         return 0.01
 
                 except IndexError as error:
@@ -238,7 +233,7 @@ class BigZ07_fix(IStrategy):
         # RSI
         informative_1h['rsi'] = ta.RSI(informative_1h, timeperiod=14)
 
-        bollinger = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=2)
+        bollinger = qtpylib.bollinger_bands(qtpylib.typical_price(informative_1h), window=20, stds=2)
         informative_1h['bb_lowerband'] = bollinger['lower']
         informative_1h['bb_middleband'] = bollinger['mid']
         informative_1h['bb_upperband'] = bollinger['upper']
