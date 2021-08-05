@@ -55,8 +55,8 @@
         {"method": "SpreadFilter", "max_spread_ratio": 0.005},
         {
             "method": "RangeStabilityFilter",
-            "lookback_days": 1,
-            "min_rate_of_change": 0.05,
+            "lookback_days": 3,
+            "min_rate_of_change": 0.1,
             "refresh_period": 1440
         },
         {"method": "PerformanceFilter"},

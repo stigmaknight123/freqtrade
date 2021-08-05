@@ -12,8 +12,8 @@ services:
       --logfile /freqtrade/user_data/logs/freqtrade.log
       --db-url sqlite:////freqtrade/user_data/tradesv3-cbhcv8xh.sqlite
       --config /freqtrade/user_data/config.json
-      --config /freqtrade/user_data/atur-binance.json
-      --config /freqtrade/user_data/atur-telegram1.json
+      --config /freqtrade/user_data/config-binance.json
+      --config /freqtrade/user_data/config-telegram1.json
       --strategy CombinedBinHAndClucV8XH
   freqtrade2:
     image: freqtradeorg/freqtrade:develop
@@ -26,6 +26,6 @@ services:
       --logfile /freqtrade/user_data/logs/freqtrade.log
       --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
       --config /freqtrade/user_data/config.json
-      --config /freqtrade/user_data/atur-binance.json
-      --config /freqtrade/user_data/atur-telegram2.json
+      --config /freqtrade/user_data/config-binance.json
+      --config /freqtrade/user_data/config-telegram2.json
       --strategy BigZ04HO

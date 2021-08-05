@@ -10,7 +10,8 @@
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
         "buy": 10,
-        "sell": 30
+        "sell": 30,
+        "unit": "seconds"
     },
     "order_types": {
         "buy": "market",
