@@ -40,11 +40,6 @@
     },
     "pairlists": [
         {"method": "StaticPairList"},
-        {
-            "method": "VolumePairList",
-            "number_assets": 70,
-            "sort_key": "quoteVolume"
-        }
     ],
     "exchange": {
         "name": "binance",
