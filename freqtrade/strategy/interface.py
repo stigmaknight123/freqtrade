@@ -288,10 +288,10 @@ class IStrategy(ABC, HyperStrategyMixin):
         time. This method is not called when sell signal is set.
 
         This method should be overridden to create sell signals that depend on trade parameters. For
-        example you could implement a stoploss relative to candle when trade was opened, or a custom
-        1:2 risk-reward ROI.
+        example you could implement a sell relative to the candle when the trade was opened,
+        or a custom 1:2 risk-reward ROI.
 
-        Custom sell reason max length is 64. Exceeding this limit will raise OperationalException.
+        Custom sell reason max length is 64. Exceeding characters will be removed.
 
         :param pair: Pair that's currently analyzed
         :param trade: trade object.
@@ -568,7 +568,7 @@ class IStrategy(ABC, HyperStrategyMixin):
         current_rate = rate
         current_profit = trade.calc_profit_ratio(current_rate)
 
-        trade.adjust_min_max_rates(high or current_rate)
+        trade.adjust_min_max_rates(high or current_rate, low or current_rate)
 
         stoplossflag = self.stop_loss_reached(current_rate=current_rate, trade=trade,
                                               current_time=date, current_profit=current_profit,
@@ -732,7 +732,7 @@ class IStrategy(ABC, HyperStrategyMixin):
         else:
             return current_profit > roi
 
-    def ohlcvdata_to_dataframe(self, data: Dict[str, DataFrame]) -> Dict[str, DataFrame]:
+    def advise_all_indicators(self, data: Dict[str, DataFrame]) -> Dict[str, DataFrame]:
         """
         Populates indicators for given candle (OHLCV) data (for multiple pairs)
         Does not run advise_buy or advise_sell!
