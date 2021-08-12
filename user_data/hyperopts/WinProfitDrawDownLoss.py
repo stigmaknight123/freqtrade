@@ -10,7 +10,7 @@ from freqtrade.optimize.hyperopt import IHyperOptLoss
 from freqtrade.data.btanalysis import calculate_max_drawdown
 
 # higher numbers penalize drawdowns more severely
-DRAWDOWN_MULT = 3
+DRAWDOWN_MULT = 1
 AVG_MULT = 2
 
 class WinProfitDrawDownLoss(IHyperOptLoss):
