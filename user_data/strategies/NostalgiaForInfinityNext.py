@@ -212,9 +212,9 @@ class NostalgiaForInfinityNext(IStrategy):
             "sma200_rising_val"         : CategoricalParameter(["20","30","36","44","50"], default="28", space='buy', optimize=False, load=True),
             "sma200_1h_rising"          : CategoricalParameter([True, False], default=False, space='buy', optimize=False, load=True),
             "sma200_1h_rising_val"      : CategoricalParameter(["20","30","36","44","50"], default="50", space='buy', optimize=False, load=True),
-            "safe_dips"                 : CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True),
+            "safe_dips"                 : CategoricalParameter([True, False], default=False, space='buy', optimize=False, load=True),
             "safe_dips_type"            : CategoricalParameter(["10","50","100"], default="80", space='buy', optimize=False, load=True),
-            "safe_pump"                 : CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True),
+            "safe_pump"                 : CategoricalParameter([True, False], default=False, space='buy', optimize=False, load=True),
             "safe_pump_type"            : CategoricalParameter(["10","50","100"], default="70", space='buy', optimize=False, load=True),
             "safe_pump_period"          : CategoricalParameter(["24","36","48"], default="24", space='buy', optimize=False, load=True),
             "btc_1h_not_downtrend"      : CategoricalParameter([True, False], default=False, space='buy', optimize=False, load=True)
@@ -297,7 +297,7 @@ class NostalgiaForInfinityNext(IStrategy):
             "sma200_1h_rising"          : CategoricalParameter([True, False], default=False, space='buy', optimize=False, load=True),
             "sma200_1h_rising_val"      : CategoricalParameter(["20","30","36","44","50"], default="50", space='buy', optimize=False, load=True),
             "safe_dips"                 : CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True),
-            "safe_dips_type"            : CategoricalParameter(["10","50","100"], default="130", space='buy', optimize=False, load=True),
+            "safe_dips_type"            : CategoricalParameter(["10","50","100"], default="100", space='buy', optimize=False, load=True),
             "safe_pump"                 : CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True),
             "safe_pump_type"            : CategoricalParameter(["10","50","100"], default="30", space='buy', optimize=False, load=True),
             "safe_pump_period"          : CategoricalParameter(["24","36","48"], default="36", space='buy', optimize=False, load=True),
@@ -340,8 +340,8 @@ class NostalgiaForInfinityNext(IStrategy):
             "sma200_1h_rising_val"      : CategoricalParameter(["20","30","36","44","50"], default="50", space='buy', optimize=False, load=True),
             "safe_dips"                 : CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True),
             "safe_dips_type"            : CategoricalParameter(["10","50","100"], default="130", space='buy', optimize=False, load=True),
-            "safe_pump"                 : CategoricalParameter([True, False], default=False, space='buy', optimize=False, load=True),
-            "safe_pump_type"            : CategoricalParameter(["10","50","100"], default="50", space='buy', optimize=False, load=True),
+            "safe_pump"                 : CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True),
+            "safe_pump_type"            : CategoricalParameter(["10","50","100"], default="120", space='buy', optimize=False, load=True),
             "safe_pump_period"          : CategoricalParameter(["24","36","48"], default="24", space='buy', optimize=False, load=True),
             "btc_1h_not_downtrend"      : CategoricalParameter([True, False], default=False, space='buy', optimize=False, load=True)
         },
@@ -402,7 +402,7 @@ class NostalgiaForInfinityNext(IStrategy):
             "sma200_1h_rising"          : CategoricalParameter([True, False], default=False, space='buy', optimize=False, load=True),
             "sma200_1h_rising_val"      : CategoricalParameter(["20","30","36","44","50"], default="24", space='buy', optimize=False, load=True),
             "safe_dips"                 : CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True),
-            "safe_dips_type"            : CategoricalParameter(["10","50","100"], default="50", space='buy', optimize=False, load=True),
+            "safe_dips_type"            : CategoricalParameter(["10","50","100"], default="120", space='buy', optimize=False, load=True),
             "safe_pump"                 : CategoricalParameter([True, False], default=False, space='buy', optimize=False, load=True),
             "safe_pump_type"            : CategoricalParameter(["10","50","100"], default="50", space='buy', optimize=False, load=True),
             "safe_pump_period"          : CategoricalParameter(["24","36","48"], default="24", space='buy', optimize=False, load=True),
@@ -2003,12 +2003,12 @@ class NostalgiaForInfinityNext(IStrategy):
     # 5 hours - level 60
     buy_dump_protection_60_5 = DecimalParameter(0.3, 0.8, default=0.74, space='buy', decimals=2, optimize=False, load=True)
 
-    buy_min_inc_1 = DecimalParameter(0.01, 0.05, default=0.021, space='buy', decimals=3, optimize=False, load=True)
+    buy_min_inc_1 = DecimalParameter(0.01, 0.05, default=0.022, space='buy', decimals=3, optimize=False, load=True)
     buy_rsi_1h_min_1 = DecimalParameter(25.0, 40.0, default=20.0, space='buy', decimals=1, optimize=False, load=True)
     buy_rsi_1h_max_1 = DecimalParameter(70.0, 90.0, default=84.0, space='buy', decimals=1, optimize=False, load=True)
-    buy_rsi_1 = DecimalParameter(20.0, 40.0, default=35.4, space='buy', decimals=1, optimize=False, load=True)
+    buy_rsi_1 = DecimalParameter(20.0, 40.0, default=36.0, space='buy', decimals=1, optimize=False, load=True)
     buy_mfi_1 = DecimalParameter(20.0, 40.0, default=50.0, space='buy', decimals=1, optimize=False, load=True)
-    buy_cti_1 = DecimalParameter(-0.99, -0.5, default=-0.87, space='buy', decimals=2, optimize=False, load=True)
+    buy_cti_1 = DecimalParameter(-0.99, -0.5, default=-0.92, space='buy', decimals=2, optimize=False, load=True)
 
     buy_rsi_1h_min_2 = DecimalParameter(30.0, 40.0, default=32.0, space='buy', decimals=1, optimize=False, load=True)
     buy_rsi_1h_max_2 = DecimalParameter(70.0, 95.0, default=84.0, space='buy', decimals=1, optimize=False, load=True)
@@ -2029,7 +2029,7 @@ class NostalgiaForInfinityNext(IStrategy):
 
     buy_ema_open_mult_5 = DecimalParameter(0.016, 0.03, default=0.018, space='buy', decimals=3, optimize=False, load=True)
     buy_bb_offset_5 = DecimalParameter(0.98, 1.0, default=0.996, space='buy', decimals=3, optimize=False, load=True)
-    buy_ema_rel_5 = DecimalParameter(0.97, 0.999, default=0.938, space='buy', decimals=3, optimize=False, load=True)
+    buy_ema_rel_5 = DecimalParameter(0.97, 0.999, default=0.915, space='buy', decimals=3, optimize=False, load=True)
     buy_cti_5 = DecimalParameter(-0.99, -0.5, default=-0.84, space='buy', decimals=2, optimize=False, load=True)
     buy_volume_5 = DecimalParameter(0.6, 6.0, default=1.8, space='buy', decimals=1, optimize=False, load=True)
 
@@ -2045,17 +2045,17 @@ class NostalgiaForInfinityNext(IStrategy):
     buy_rsi_1h_8 = DecimalParameter(40.0, 66.0, default=64.0, space='buy', decimals=1, optimize=False, load=True)
     buy_volume_8 = DecimalParameter(0.6, 6.0, default=1.8, space='buy', decimals=1, optimize=False, load=True)
 
-    buy_ma_offset_9 = DecimalParameter(0.91, 0.94, default=0.922, space='buy', decimals=3, optimize=False, load=True)
+    buy_ma_offset_9 = DecimalParameter(0.91, 0.94, default=0.968, space='buy', decimals=3, optimize=False, load=True)
     buy_bb_offset_9 = DecimalParameter(0.96, 0.98, default=0.942, space='buy', decimals=3, optimize=False, load=True)
     buy_rsi_1h_min_9 = DecimalParameter(26.0, 40.0, default=20.0, space='buy', decimals=1, optimize=False, load=True)
     buy_rsi_1h_max_9 = DecimalParameter(70.0, 90.0, default=88.0, space='buy', decimals=1, optimize=False, load=True)
     buy_mfi_9 = DecimalParameter(36.0, 56.0, default=50.0, space='buy', decimals=1, optimize=False, load=True)
 
-    buy_ma_offset_10 = DecimalParameter(0.93, 0.97, default=0.948, space='buy', decimals=3, optimize=False, load=True)
-    buy_bb_offset_10 = DecimalParameter(0.97, 0.99, default=0.976, space='buy', decimals=3, optimize=False, load=True)
-    buy_rsi_1h_10 = DecimalParameter(20.0, 40.0, default=37.0, space='buy', decimals=1, optimize=False, load=True)
+    buy_ma_offset_10 = DecimalParameter(0.94, 0.99, default=0.98, space='buy', decimals=3, optimize=False, load=True)
+    buy_bb_offset_10 = DecimalParameter(0.97, 0.99, default=0.972, space='buy', decimals=3, optimize=False, load=True)
+    buy_rsi_1h_10 = DecimalParameter(30.0, 60.0, default=50.0, space='buy', decimals=1, optimize=False, load=True)
 
-    buy_ma_offset_11 = DecimalParameter(0.93, 0.99, default=0.936, space='buy', decimals=3, optimize=False, load=True)
+    buy_ma_offset_11 = DecimalParameter(0.93, 0.99, default=0.946, space='buy', decimals=3, optimize=False, load=True)
     buy_min_inc_11 = DecimalParameter(0.005, 0.05, default=0.038, space='buy', decimals=3, optimize=False, load=True)
     buy_rsi_1h_min_11 = DecimalParameter(40.0, 60.0, default=46.0, space='buy', decimals=1, optimize=False, load=True)
     buy_rsi_1h_max_11 = DecimalParameter(70.0, 90.0, default=84.0, space='buy', decimals=1, optimize=False, load=True)
@@ -2079,7 +2079,7 @@ class NostalgiaForInfinityNext(IStrategy):
     buy_ema_open_mult_15 = DecimalParameter(0.01, 0.03, default=0.024, space='buy', decimals=3, optimize=False, load=True)
     buy_ma_offset_15 = DecimalParameter(0.93, 0.99, default=0.958, space='buy', decimals=3, optimize=False, load=True)
     buy_rsi_15 = DecimalParameter(20.0, 36.0, default=28.0, space='buy', decimals=1, optimize=False, load=True)
-    buy_ema_rel_15 = DecimalParameter(0.97, 0.999, default=0.977, space='buy', decimals=3, optimize=False, load=True)
+    buy_ema_rel_15 = DecimalParameter(0.97, 0.999, default=0.974, space='buy', decimals=3, optimize=False, load=True)
 
     buy_ma_offset_16 = DecimalParameter(0.93, 0.97, default=0.953, space='buy', decimals=3, optimize=False, load=True)
     buy_rsi_16 = DecimalParameter(26.0, 50.0, default=31.0, space='buy', decimals=1, optimize=False, load=True)
@@ -2097,7 +2097,7 @@ class NostalgiaForInfinityNext(IStrategy):
     buy_cti_18 = DecimalParameter(-0.99, -0.5, default=-0.86, space='buy', decimals=2, optimize=False, load=True)
 
     buy_rsi_1h_min_19 = DecimalParameter(40.0, 70.0, default=30.0, space='buy', decimals=1, optimize=False, load=True)
-    buy_chop_max_19 = DecimalParameter(20.0, 60.0, default=23.0, space='buy', decimals=1, optimize=False, load=True)
+    buy_chop_max_19 = DecimalParameter(20.0, 60.0, default=21.3, space='buy', decimals=1, optimize=False, load=True)
 
     buy_rsi_20 = DecimalParameter(20.0, 36.0, default=36.0, space='buy', decimals=1, optimize=False, load=True)
     buy_rsi_1h_20 = DecimalParameter(14.0, 30.0, default=16.0, space='buy', decimals=1, optimize=False, load=True)
@@ -2927,7 +2927,7 @@ class NostalgiaForInfinityNext(IStrategy):
             if last_candle['r_480'] > -2.6:
                 return True, 'signal_profit_w_1_9'
         elif 0.12 > current_profit >= 0.1:
-            if (last_candle['r_480'] > -8.0) and (last_candle['rsi_14'] > 72.0):
+            if (last_candle['r_480'] > -3.0) and (last_candle['rsi_14'] > 72.0):
                 return True, 'signal_profit_w_1_10'
         elif 0.2 > current_profit >= 0.12:
             if (last_candle['r_480'] > -1.5) and (last_candle['rsi_14'] > 78.0):
@@ -2958,7 +2958,7 @@ class NostalgiaForInfinityNext(IStrategy):
             if (last_candle['r_480'] > -2.5) and (last_candle['rsi_14'] > 79.0) and (last_candle['stochrsi_fastk_96'] > 99.0)  and (last_candle['stochrsi_fastd_96'] > 99.0):
                 return True, 'signal_profit_w_2_6'
         elif 0.08 > current_profit >= 0.07:
-            if (last_candle['r_480'] > -34.0) and (last_candle['rsi_14'] > 80.0) and (last_candle['stochrsi_fastk_96'] > 99.0)  and (last_candle['stochrsi_fastd_96'] > 99.0):
+            if (last_candle['r_480'] > -3.0) and (last_candle['rsi_14'] > 80.0) and (last_candle['stochrsi_fastk_96'] > 99.0)  and (last_candle['stochrsi_fastd_96'] > 99.0):
                 return True, 'signal_profit_w_2_7'
         elif 0.09 > current_profit >= 0.08:
             if (last_candle['r_480'] > -3.0) and (last_candle['rsi_14'] > 80.5) and (last_candle['stochrsi_fastk_96'] > 99.0)  and (last_candle['stochrsi_fastd_96'] > 99.0):
@@ -2980,16 +2980,16 @@ class NostalgiaForInfinityNext(IStrategy):
 
     def sell_r_3(self, current_profit: float, last_candle) -> tuple:
         if 0.02 > current_profit >= 0.012:
-            if (last_candle['r_480'] > -6.0) and (last_candle['rsi_14'] > 74.0) and (last_candle['stochrsi_fastk_96'] > 99.0) and (last_candle['stochrsi_fastd_96'] > 99.0):
+            if (last_candle['r_480'] > -2.0) and (last_candle['rsi_14'] > 74.0) and (last_candle['stochrsi_fastk_96'] > 99.0) and (last_candle['stochrsi_fastd_96'] > 99.0):
                 return True, 'signal_profit_w_3_1'
         elif 0.03 > current_profit >= 0.02:
-            if (last_candle['r_480'] > -8.0) and (last_candle['rsi_14'] > 74.0) and (last_candle['stochrsi_fastk_96'] > 99.0)  and (last_candle['stochrsi_fastd_96'] > 99.0):
+            if (last_candle['r_480'] > -3.0) and (last_candle['rsi_14'] > 74.0) and (last_candle['stochrsi_fastk_96'] > 99.0)  and (last_candle['stochrsi_fastd_96'] > 99.0):
                 return True, 'signal_profit_w_3_2'
         elif 0.04 > current_profit >= 0.03:
-            if (last_candle['r_480'] > -29.0) and (last_candle['rsi_14'] > 74.0) and (last_candle['stochrsi_fastk_96'] > 99.0)  and (last_candle['stochrsi_fastd_96'] > 99.0):
+            if (last_candle['r_480'] > -4.0) and (last_candle['rsi_14'] > 74.0) and (last_candle['stochrsi_fastk_96'] > 99.0)  and (last_candle['stochrsi_fastd_96'] > 99.0):
                 return True, 'signal_profit_w_3_3'
         elif 0.05 > current_profit >= 0.04:
-            if (last_candle['r_480'] > -30.0) and (last_candle['rsi_14'] > 79.0) and (last_candle['stochrsi_fastk_96'] > 99.0)  and (last_candle['stochrsi_fastd_96'] > 99.0):
+            if (last_candle['r_480'] > -5.0) and (last_candle['rsi_14'] > 79.0) and (last_candle['stochrsi_fastk_96'] > 99.0)  and (last_candle['stochrsi_fastd_96'] > 99.0):
                 return True, 'signal_profit_w_3_4'
 
         return False, None
@@ -3008,19 +3008,19 @@ class NostalgiaForInfinityNext(IStrategy):
             if (last_candle['r_480'] > -4.5) and (last_candle['rsi_14'] > 68.0) and (last_candle['cti'] > 0.9):
                 return True, 'signal_profit_w_4_4'
         elif (0.06 > current_profit >= 0.05):
-            if (last_candle['r_480'] > -24.0) and (last_candle['rsi_14'] > 68.0) and (last_candle['cti'] > 0.9):
+            if (last_candle['r_480'] > -5.0) and (last_candle['rsi_14'] > 68.0) and (last_candle['cti'] > 0.9):
                 return True, 'signal_profit_w_4_5'
         elif (0.07 > current_profit >= 0.06):
-            if (last_candle['r_480'] > -26.0) and (last_candle['rsi_14'] > 79.0) and (last_candle['cti'] > 0.9):
+            if (last_candle['r_480'] > -5.5) and (last_candle['rsi_14'] > 79.0) and (last_candle['cti'] > 0.9):
                 return True, 'signal_profit_w_4_6'
         elif (0.08 > current_profit >= 0.07):
-            if (last_candle['r_480'] > -20.0) and (last_candle['rsi_14'] > 79.0) and (last_candle['cti'] > 0.9):
+            if (last_candle['r_480'] > -6.0) and (last_candle['rsi_14'] > 79.0) and (last_candle['cti'] > 0.9):
                 return True, 'signal_profit_w_4_7'
         elif (0.09 > current_profit >= 0.08):
-            if (last_candle['r_480'] > -18.0) and (last_candle['rsi_14'] > 79.0) and (last_candle['cti'] > 0.9):
+            if (last_candle['r_480'] > -6.5) and (last_candle['rsi_14'] > 79.0) and (last_candle['cti'] > 0.9):
                 return True, 'signal_profit_w_4_8'
         elif (0.1 > current_profit >= 0.09):
-            if (last_candle['r_480'] > -16.0) and (last_candle['rsi_14'] > 79.0) and (last_candle['cti'] > 0.9):
+            if (last_candle['r_480'] > -5.0) and (last_candle['rsi_14'] > 79.0) and (last_candle['cti'] > 0.9):
                 return True, 'signal_profit_w_4_9'
         elif (0.12 > current_profit >= 0.1):
             if (last_candle['r_480'] > -4.0) and (last_candle['rsi_14'] > 79.0) and (last_candle['cti'] > 0.9):
