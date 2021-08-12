@@ -169,7 +169,8 @@
             "FIO/BUSD",
             "HOT/BUSD",
             "PHA/BUSD",
-            "WAVES/BUSD"
+            "WAVES/BUSD",
+            "IOTX/BUSD"
         ],
         "pair_blacklist": []
     },
