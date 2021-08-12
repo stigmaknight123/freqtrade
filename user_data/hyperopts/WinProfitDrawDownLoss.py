@@ -7,6 +7,7 @@ from typing import Dict
 from pandas import DataFrame
 
 from freqtrade.optimize.hyperopt import IHyperOptLoss
+from freqtrade.data.btanalysis import calculate_max_drawdown
 
 # higher numbers penalize drawdowns more severely
 DRAWDOWN_MULT = 3
