@@ -13,7 +13,7 @@ from freqtrade.data.btanalysis import calculate_max_drawdown
 DRAWDOWN_MULT = 2
 AVG_MULT = 1
 
-class WinProfitDrawDownLoss(IHyperOptLoss):
+class AvgProfitDrawDownLoss(IHyperOptLoss):
 
     @staticmethod
     def hyperopt_loss_function(results: DataFrame, trade_count: int,
