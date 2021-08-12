@@ -10,8 +10,8 @@ from freqtrade.optimize.hyperopt import IHyperOptLoss
 from freqtrade.data.btanalysis import calculate_max_drawdown
 
 # higher numbers penalize drawdowns more severely
-DRAWDOWN_MULT = 1
-AVG_MULT = 2
+DRAWDOWN_MULT = 2
+AVG_MULT = 1
 
 class WinProfitDrawDownLoss(IHyperOptLoss):
 
@@ -37,10 +37,8 @@ class WinProfitDrawDownLoss(IHyperOptLoss):
         except ValueError:
             max_drawdown_per = 0
 
-        wins = len(results[results['profit_ratio'] > 0])
         avg_profit = results['profit_ratio'].sum() * 100.0
 
-        win_ratio = wins / trade_count
-        if((1 - max_drawdown_per * DRAWDOWN_MULT) < 0) and (avg_profit < 0):
+        if ((max_drawdown_per * DRAWDOWN_MULT) > 1) and (avg_profit < 0):
             avg_profit = avg_profit * -1
-        return -avg_profit * AVG_MULT * win_ratio * 100 * (1 - max_drawdown_per * DRAWDOWN_MULT)
+        return -avg_profit * AVG_MULT * (1 - max_drawdown_per * DRAWDOWN_MULT)
