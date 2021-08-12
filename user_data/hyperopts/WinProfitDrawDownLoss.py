@@ -11,6 +11,7 @@ from freqtrade.data.btanalysis import calculate_max_drawdown
 
 # higher numbers penalize drawdowns more severely
 DRAWDOWN_MULT = 3
+AVG_MULT = 2
 
 class WinProfitDrawDownLoss(IHyperOptLoss):
 
@@ -40,4 +41,6 @@ class WinProfitDrawDownLoss(IHyperOptLoss):
         avg_profit = results['profit_ratio'].sum() * 100.0
 
         win_ratio = wins / trade_count
-        return -avg_profit * win_ratio * 100
+        if((1 - max_drawdown_per * DRAWDOWN_MULT) < 0):
+            avg_profit = avg_profit * -1
+        return -avg_profit * AVG_MULT * win_ratio * 100 * (1 - max_drawdown_per * DRAWDOWN_MULT)
