@@ -39,7 +39,7 @@ class AvgProfitDrawDownLoss(IHyperOptLoss):
             max_drawdown_per = 0
 
         avg_profit = results['profit_ratio'].sum()
-        accept_ratio = (avg_profit - 0.6) * 100
+        accept_ratio = (avg_profit - 0.8) * 100
 
         if ((max_drawdown_per * DRAWDOWN_MULT) > 1) and (accept_ratio < 0):
             accept_ratio = accept_ratio * -1
