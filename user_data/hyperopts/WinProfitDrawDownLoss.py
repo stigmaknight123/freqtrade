@@ -38,10 +38,10 @@ class WinProfitDrawDownLoss(IHyperOptLoss):
             max_drawdown_per = 0
 
         wins = len(results[results['profit_ratio'] > 0])
-        avg_profit = results['profit_ratio'].sum() * 100.0
+        avg_profit = results['profit_ratio'].sum()
 
         win_ratio = wins / trade_count
-        accept_ratio = avg_profit - 0.6
+        accept_ratio = (avg_profit - 0.6) * 100
         if((1 - max_drawdown_per * DRAWDOWN_MULT) < 0) and (accept_ratio < 0):
             accept_ratio = accept_ratio * -1
         return -accept_ratio * AVG_MULT * win_ratio * 100 * (1 - max_drawdown_per * DRAWDOWN_MULT)
