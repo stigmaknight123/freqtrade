@@ -41,4 +41,4 @@ class AvgProfitDrawDownLoss(IHyperOptLoss):
 
         if ((max_drawdown_per * DRAWDOWN_MULT) > 1) and (avg_profit < 0):
             avg_profit = avg_profit * -1
-        return -avg_profit * AVG_MULT * (1 - max_drawdown_per * DRAWDOWN_MULT)
+        return -avg_profit * AVG_MULT * (1 - max_drawdown_per * DRAWDOWN_MULT) * trade_count
