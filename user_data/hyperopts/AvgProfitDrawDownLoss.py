@@ -11,7 +11,8 @@ from freqtrade.data.btanalysis import calculate_max_drawdown
 
 # higher numbers penalize drawdowns more severely
 DRAWDOWN_MULT = 2
-AVG_MULT = 1
+AVG_MULT = 3
+TOTAL_DIV = 2
 
 class AvgProfitDrawDownLoss(IHyperOptLoss):
 
@@ -42,4 +43,4 @@ class AvgProfitDrawDownLoss(IHyperOptLoss):
 
         if ((max_drawdown_per * DRAWDOWN_MULT) > 1) and (accept_ratio < 0):
             accept_ratio = accept_ratio * -1
-        return -accept_ratio * AVG_MULT * (1 - max_drawdown_per * DRAWDOWN_MULT) * trade_count
+        return -accept_ratio * AVG_MULT * (1 - max_drawdown_per * DRAWDOWN_MULT) * trade_count / TOTAL_DIV
