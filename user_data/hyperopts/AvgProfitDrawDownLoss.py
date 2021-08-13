@@ -36,11 +36,8 @@ class AvgProfitDrawDownLoss(IHyperOptLoss):
         try:
             max_drawdown_per, _, _, _, _ = calculate_max_drawdown(results, value_col='profit_ratio')
         except ValueError:
-            max_drawdown_per = 0
+            max_drawdown_per = 0.001
 
         avg_profit = results['profit_ratio'].sum()
-        accept_ratio = (avg_profit - 0.8)
 
-        if ((max_drawdown_per * DRAWDOWN_MULT) > 1) and (accept_ratio < 0):
-            accept_ratio = accept_ratio * -1
-        return -1 * (accept_ratio * AVG_MULT * (1 - max_drawdown_per * DRAWDOWN_MULT) * trade_count / TOTAL_DIV)
+        return -1 * (avg_profit * AVG_MULT / (max_drawdown_per * DRAWDOWN_MULT))
