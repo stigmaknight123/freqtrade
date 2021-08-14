@@ -101,19 +101,6 @@ class NotAnotherSMAOffsetStrategy(IStrategy):
             'ma_sell': {'color': 'orange'},
         },
     }
-    def confirm_trade_exit(self, pair: str, trade: Trade, order_type: str, amount: float,
-                           rate: float, time_in_force: str, sell_reason: str,
-                           current_time: datetime, **kwargs) -> bool:
-
-        dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
-        last_candle = dataframe.iloc[-1]
-
-
-        if (last_candle is not None):
-            if (sell_reason in ['sell_signal']):
-                if (last_candle['hma_50']*1.149 > last_candle['ema_100']) and (last_candle['close'] < last_candle['ema_100']*0.951): #*1.2
-                    return False
-        return True
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
@@ -195,13 +182,23 @@ class NotAnotherSMAOffsetStrategy(IStrategy):
                 (dataframe['close'] > (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value)) &
                 (dataframe['volume'] > 0)&
                 (dataframe['rsi_fast']>dataframe['rsi_slow'])
-            )    
+            )
             
+        )
+
+        conditions.append(
+            (
+                dataframe['hma_50']*1.149 <= dataframe['ema_100']
+            )
+            |
+            (
+                dataframe['close'] >= dataframe['ema_100']*0.951
+            )
         )
 
         if conditions:
             dataframe.loc[
-                reduce(lambda x, y: x | y, conditions),
+                reduce(lambda x, y: x & y, conditions),
                 'sell'
             ]=1
 
