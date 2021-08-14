@@ -110,6 +110,34 @@ class NotAnotherSMAOffsetStrategy(IStrategy):
             'ma_sell': {'color': 'orange'},
         },
     }
+
+    protections = [
+        #   {
+        #       "method": "StoplossGuard",
+        #       "lookback_period_candles": 12,
+        #       "trade_limit": 1,
+        #       "stop_duration_candles": 6,
+        #       "only_per_pair": True
+        #   },
+        #   {
+        #       "method": "StoplossGuard",
+        #       "lookback_period_candles": 12,
+        #       "trade_limit": 2,
+        #       "stop_duration_candles": 6,
+        #       "only_per_pair": False
+        #   },
+        {
+            "method": "LowProfitPairs",
+            "lookback_period_candles": 60,
+            "trade_limit": 1,
+            "stop_duration": 60,
+            "required_profit": -0.05
+        },
+        {
+            "method": "CooldownPeriod",
+            "stop_duration_candles": 2
+        }
+    ]
     
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         if self.config['runmode'].value == 'hyperopt':
