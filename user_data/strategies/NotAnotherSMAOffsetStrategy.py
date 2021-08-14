@@ -101,19 +101,30 @@ class NotAnotherSMAOffsetStrategy(IStrategy):
             'ma_sell': {'color': 'orange'},
         },
     }
+    def confirm_trade_exit(self, pair: str, trade: Trade, order_type: str, amount: float,
+                           rate: float, time_in_force: str, sell_reason: str,
+                           current_time: datetime, **kwargs) -> bool:
+
+        dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
+        last_candle = dataframe.iloc[-1]
+
+
+        if (last_candle is not None):
+            if (sell_reason in ['sell_signal']):
+                if (last_candle['hma_50']*1.149 > last_candle['ema_100']) and (last_candle['close'] < last_candle['ema_100']*0.951): #*1.2
+                    return False
+        return True
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        if self.config['runmode'].value == 'hyperopt':
-            # Calculate all ma_buy values
-            for val in self.base_nb_candles_buy.range:
-                dataframe[f'ma_buy_{val}'] = ta.EMA(dataframe, timeperiod=val)
-            for val in self.base_nb_candles_sell.range:
-                dataframe[f'ma_sell_{val}'] = ta.EMA(dataframe, timeperiod=val)
-        else:
-            dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'] = ta.EMA(dataframe, timeperiod=self.base_nb_candles_buy.value)
-            dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] = ta.EMA(dataframe, timeperiod=self.base_nb_candles_sell.value)
+        # Calculate all ma_buy values
+        for val in self.base_nb_candles_buy.range:
+            dataframe[f'ma_buy_{val}'] = ta.EMA(dataframe, timeperiod=val)
 
+        # Calculate all ma_sell values
+        for val in self.base_nb_candles_sell.range:
+            dataframe[f'ma_sell_{val}'] = ta.EMA(dataframe, timeperiod=val)
+        
         dataframe['hma_50'] = qtpylib.hull_moving_average(dataframe['close'], window=50)
         dataframe['ema_100'] = ta.EMA(dataframe, timeperiod=100)          
 
@@ -131,37 +142,39 @@ class NotAnotherSMAOffsetStrategy(IStrategy):
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         conditions = []
-        dataframe.loc[:, 'buy_tag'] = ''
 
-        buy_1 = (
-            (dataframe['rsi_fast'] <35)&
-            (dataframe['close'] < (dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'] * self.low_offset.value)) &
-            (dataframe['EWO'] > self.ewo_high.value) &
-            (dataframe['rsi'] < self.rsi_buy.value) &
-            (dataframe['volume'] > 0)&
-            (dataframe['close'] < (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value))
-        )
-        dataframe.loc[buy_1, 'buy_tag'] += '1 '
-        conditions.append(buy_1)
+        conditions.append(
+            (   
 
-        buy_2 = (
-            (dataframe['rsi_fast'] < 35)&
-            (dataframe['close'] < (dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'] * self.low_offset.value)) &
-            (dataframe['EWO'] < self.ewo_low.value) &
-            (dataframe['volume'] > 0)&
-            (dataframe['close'] < (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value))
+                (dataframe['rsi_fast'] <35)&
+                (dataframe['close'] < (dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'] * self.low_offset.value)) &
+                (dataframe['EWO'] > self.ewo_high.value) &
+                (dataframe['rsi'] < self.rsi_buy.value) &
+                (dataframe['volume'] > 0)&
+                (dataframe['close'] < (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value))
+                
+
+            )
         )
-        dataframe.loc[buy_2, 'buy_tag'] += '2 '
-        conditions.append(buy_2)
+
+        conditions.append(
+            (   
+                
+
+                (dataframe['rsi_fast'] < 35)&
+                (dataframe['close'] < (dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'] * self.low_offset.value)) &
+                (dataframe['EWO'] < self.ewo_low.value) &
+                (dataframe['volume'] > 0)&
+                (dataframe['close'] < (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value))
+                
+            )
+        )
 
         if conditions:
-            dataframe.loc[:, 'buy'] = reduce(lambda x, y: x | y, conditions)
-
-        # if conditions:
-        #     dataframe.loc[
-        #         reduce(lambda x, y: x | y, conditions),
-        #         'buy'
-        #     ]=1
+            dataframe.loc[
+                reduce(lambda x, y: x | y, conditions),
+                'buy'
+            ]=1
 
         return dataframe
 
@@ -169,28 +182,20 @@ class NotAnotherSMAOffsetStrategy(IStrategy):
         conditions = []
 
         conditions.append(
-            (
-                (dataframe['hma_50']*1.149 > dataframe['ema_100']) &
-                (dataframe['close'] < dataframe['ema_100']*0.951) #*1.2
+            (   (dataframe['close']>dataframe['sma_9'])&
+                (dataframe['close'] > (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset_2.value)) &
+                (dataframe['rsi']>50)&
+                (dataframe['volume'] > 0)&
+                (dataframe['rsi_fast']>dataframe['rsi_slow'])
+
             )
-            &
+            |
             (
-                (
-                    (dataframe['close']>dataframe['sma_9'])&
-                    (dataframe['close'] > (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset_2.value)) &
-                    (dataframe['rsi']>50)&
-                    (dataframe['volume'] > 0)&
-                    (dataframe['rsi_fast']>dataframe['rsi_slow'])
-    
-                )
-                |
-                (
-                    (dataframe['close']<dataframe['hma_50'])&
-                    (dataframe['close'] > (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value)) &
-                    (dataframe['volume'] > 0)&
-                    (dataframe['rsi_fast']>dataframe['rsi_slow'])
-                )
-            )
+                (dataframe['close']<dataframe['hma_50'])&
+                (dataframe['close'] > (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value)) &
+                (dataframe['volume'] > 0)&
+                (dataframe['rsi_fast']>dataframe['rsi_slow'])
+            )    
             
         )
 
