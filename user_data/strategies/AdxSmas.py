@@ -8,14 +8,14 @@ import freqtrade.vendor.qtpylib.indicators as qtpylib
 # --------------------------------
 
 
-class BbandRsi(IStrategy):
+class AdxSmas(IStrategy):
     """
 
     author@: Gert Wohlgemuth
 
     converted from:
 
-    https://github.com/sthewissen/Mynt/blob/master/src/Mynt.Core/Strategies/BbandRsi.cs
+    https://github.com/sthewissen/Mynt/blob/master/src/Mynt.Core/Strategies/AdxSmas.cs
 
     """
 
@@ -33,21 +33,17 @@ class BbandRsi(IStrategy):
     timeframe = '1h'
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        dataframe['rsi'] = ta.RSI(dataframe, timeperiod=14)
-
-        # Bollinger bands
-        bollinger = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=2)
-        dataframe['bb_lowerband'] = bollinger['lower']
-        dataframe['bb_middleband'] = bollinger['mid']
-        dataframe['bb_upperband'] = bollinger['upper']
+        dataframe['adx'] = ta.ADX(dataframe, timeperiod=14)
+        dataframe['short'] = ta.SMA(dataframe, timeperiod=3)
+        dataframe['long'] = ta.SMA(dataframe, timeperiod=6)
 
         return dataframe
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                    (dataframe['rsi'] < 30) &
-                    (dataframe['close'] < dataframe['bb_lowerband'])
+                    (dataframe['adx'] > 25) &
+                    (qtpylib.crossed_above(dataframe['short'], dataframe['long']))
 
             ),
             'buy'] = 1
@@ -56,7 +52,8 @@ class BbandRsi(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                    (dataframe['rsi'] > 70)
+                    (dataframe['adx'] < 25) &
+                    (qtpylib.crossed_above(dataframe['long'], dataframe['short']))
 
             ),
             'sell'] = 1

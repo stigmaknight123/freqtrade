@@ -8,14 +8,14 @@ import freqtrade.vendor.qtpylib.indicators as qtpylib
 # --------------------------------
 
 
-class BbandRsi(IStrategy):
+class AwesomeMacd(IStrategy):
     """
 
     author@: Gert Wohlgemuth
 
     converted from:
 
-    https://github.com/sthewissen/Mynt/blob/master/src/Mynt.Core/Strategies/BbandRsi.cs
+    https://github.com/sthewissen/Mynt/blob/master/src/Mynt.Core/Strategies/AwesomeMacd.cs
 
     """
 
@@ -33,21 +33,22 @@ class BbandRsi(IStrategy):
     timeframe = '1h'
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        dataframe['rsi'] = ta.RSI(dataframe, timeperiod=14)
+        dataframe['adx'] = ta.ADX(dataframe, timeperiod=14)
+        dataframe['ao'] = qtpylib.awesome_oscillator(dataframe)
 
-        # Bollinger bands
-        bollinger = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=2)
-        dataframe['bb_lowerband'] = bollinger['lower']
-        dataframe['bb_middleband'] = bollinger['mid']
-        dataframe['bb_upperband'] = bollinger['upper']
+        macd = ta.MACD(dataframe)
+        dataframe['macd'] = macd['macd']
+        dataframe['macdsignal'] = macd['macdsignal']
+        dataframe['macdhist'] = macd['macdhist']
 
         return dataframe
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                    (dataframe['rsi'] < 30) &
-                    (dataframe['close'] < dataframe['bb_lowerband'])
+                    (dataframe['macd'] > 0) &
+                    (dataframe['ao'] > 0) &
+                    (dataframe['ao'].shift() < 0)
 
             ),
             'buy'] = 1
@@ -56,7 +57,9 @@ class BbandRsi(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                    (dataframe['rsi'] > 70)
+                    (dataframe['macd'] < 0) &
+                    (dataframe['ao'] < 0) &
+                    (dataframe['ao'].shift() > 0)
 
             ),
             'sell'] = 1

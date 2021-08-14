@@ -14,69 +14,43 @@ from pandas import DataFrame, DatetimeIndex, merge
 
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
+import numpy  # noqa
 
 
-# import numpy as np # noqa
-
-class Low_BB(IStrategy):
+class ClucMay72018(IStrategy):
     """
 
-    author@: Thorsten
+    author@: Gert Wohlgemuth
 
     works on new objectify branch!
 
-    idea:
-        buy after crossing .98 * lower_bb and sell if trailing stop loss is hit
     """
 
     # Minimal ROI designed for the strategy.
     # This attribute will be overridden if the config file contains "minimal_roi"
     minimal_roi = {
-        "0": 0.9,
-        "1": 0.05,
-        "10": 0.04,
-        "15": 0.5
+        "0": 0.01
     }
 
     # Optimal stoploss designed for the strategy
     # This attribute will be overridden if the config file contains "stoploss"
-    stoploss = -0.015
+    stoploss = -0.05
 
     # Optimal timeframe for the strategy
-    timeframe = '1m'
+    timeframe = '5m'
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        ##################################################################################
-        # buy and sell indicators
-
-        bollinger = qtpylib.bollinger_bands(
-            qtpylib.typical_price(dataframe), window=20, stds=2
-        )
-        dataframe['bb_lowerband'] = bollinger['lower']
-        dataframe['bb_middleband'] = bollinger['mid']
-        dataframe['bb_upperband'] = bollinger['upper']
-
+        dataframe['rsi'] = ta.RSI(dataframe, timeperiod=5)
+        rsiframe = DataFrame(dataframe['rsi']).rename(columns={'rsi': 'close'})
+        dataframe['emarsi'] = ta.EMA(rsiframe, timeperiod=5)
         macd = ta.MACD(dataframe)
         dataframe['macd'] = macd['macd']
-        dataframe['macdsignal'] = macd['macdsignal']
-        dataframe['macdhist'] = macd['macdhist']
-
-        # dataframe['cci'] = ta.CCI(dataframe)
-        # dataframe['mfi'] = ta.MFI(dataframe)
-        # dataframe['rsi'] = ta.RSI(dataframe, timeperiod=7)
-
-        # dataframe['canbuy'] = np.NaN
-        # dataframe['canbuy2'] = np.NaN
-        # dataframe.loc[dataframe.close.rolling(49).min() <= 1.1 * dataframe.close, 'canbuy'] == 1
-        # dataframe.loc[dataframe.close.rolling(600).max() < 1.2 * dataframe.close, 'canbuy'] = 1
-        # dataframe.loc[dataframe.close.rolling(600).max() * 0.8 >  dataframe.close, 'canbuy2'] = 1
-        ##################################################################################
-        # required for graphing
-        bollinger = qtpylib.bollinger_bands(dataframe['close'], window=20, stds=2)
+        dataframe['adx'] = ta.ADX(dataframe)
+        bollinger = qtpylib.bollinger_bands(qtpylib.typical_price(dataframe), window=20, stds=2)
         dataframe['bb_lowerband'] = bollinger['lower']
-        dataframe['bb_upperband'] = bollinger['upper']
         dataframe['bb_middleband'] = bollinger['mid']
-
+        dataframe['bb_upperband'] = bollinger['upper']
+        dataframe['ema100'] = ta.EMA(dataframe, timeperiod=50)
         return dataframe
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -87,11 +61,10 @@ class Low_BB(IStrategy):
         """
         dataframe.loc[
             (
-
-                (dataframe['close'] <= 0.98 * dataframe['bb_lowerband'])
-
-            )
-            ,
+                    (dataframe['close'] < dataframe['ema100']) &
+                    (dataframe['close'] < 0.985 * dataframe['bb_lowerband']) &
+                    (dataframe['volume'] < (dataframe['volume'].rolling(window=30).mean().shift(1) * 20))
+            ),
             'buy'] = 1
 
         return dataframe
@@ -103,6 +76,8 @@ class Low_BB(IStrategy):
         :return: DataFrame with buy column
         """
         dataframe.loc[
-            (),
+            (
+                (dataframe['close'] > dataframe['bb_middleband'])
+            ),
             'sell'] = 1
         return dataframe

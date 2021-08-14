@@ -450,53 +450,7 @@ def condition_generator(dataframe, operator, indicator, crossed_indicator, real_
 
 class GodStraNew(IStrategy):
     # #################### RESULTS PASTE PLACE ####################
-    #54/100:     71 trades. 48/20/3 Wins/Draws/Losses. Avg profit   8.58%. Median profit   8.16%. Total profit  313.71477874 USDT ( 570.39%). Avg duration 2 days, 16:10:00 min. Objective: -10.35948
 
-    # Buy hyperspace params:
-    buy_params = {
-        "buy_crossed_indicator0": "SMA-6",
-        "buy_crossed_indicator1": "SMA-12",
-        "buy_crossed_indicator2": "SMA-50",
-        "buy_indicator0": "SMA-12",
-        "buy_indicator1": "SMA-110",
-        "buy_indicator2": "SMA-100",
-        "buy_operator0": "<R",
-        "buy_operator1": "/<R",
-        "buy_operator2": "D",
-        "buy_real_num0": 0.8,
-        "buy_real_num1": 0.6,
-        "buy_real_num2": 0.1,
-    }
-
-    # Sell hyperspace params:
-    sell_params = {
-        "sell_crossed_indicator0": "SMA-50",
-        "sell_crossed_indicator1": "SMA-100",
-        "sell_crossed_indicator2": "SMA-100",
-        "sell_indicator0": "SMA-5",
-        "sell_indicator1": "SMA-15",
-        "sell_indicator2": "SMA-55",
-        "sell_operator0": "<",
-        "sell_operator1": "CUT",
-        "sell_operator2": "OT",
-        "sell_real_num0": 0.0,
-        "sell_real_num1": 0.8,
-        "sell_real_num2": 0.1,
-    }
-
-    # ROI table:
-    minimal_roi = {
-        "0": 0.69,
-        "923": 0.152,
-        "2673": 0.081,
-        "4791": 0
-    }
-
-    # Trailing stop:
-    trailing_stop = True
-    trailing_stop_positive = 0.024
-    trailing_stop_positive_offset = 0.106
-    trailing_only_offset_is_reached = True
     # #################### END OF RESULT PLACE ####################
 
     # TODO: Its not dry code!
