@@ -27,9 +27,9 @@ class BinHV45(IStrategy):
     stoploss = -0.05
     timeframe = '1m'
 
-    buy_bbdelta = IntParameter(low=1, high=15, default=30, space='buy', optimize=True)
-    buy_closedelta = IntParameter(low=15, high=20, default=30, space='buy', optimize=True)
-    buy_tail = IntParameter(low=20, high=30, default=30, space='buy', optimize=True)
+    buy_bbdelta = IntParameter(low=1, high=60, default=30, space='buy', optimize=True)
+    buy_closedelta = IntParameter(low=10, high=30, default=30, space='buy', optimize=True)
+    buy_tail = IntParameter(low=20, high=450, default=30, space='buy', optimize=True)
 
     # Hyperopt parameters
     buy_params = {
