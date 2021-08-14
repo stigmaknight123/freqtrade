@@ -48,7 +48,7 @@ class NotAnotherSMAOffsetStrategyX1(IStrategy):
         "base_nb_candles_sell": 24,
         "high_offset": 0.991,
         "high_offset_2": 0.997,
-        "pHSL": -0.08,
+        "pHSL": -0.99,
         "pPF_1": 0.022,
         "pSL_1": 0.021,
         "pPF_2": 0.08,
@@ -64,7 +64,7 @@ class NotAnotherSMAOffsetStrategyX1(IStrategy):
     }
 
     # Stoploss:
-    stoploss = -0.99
+    stoploss = -0.35
 
     # SMAOffset
     base_nb_candles_buy = IntParameter(
@@ -120,12 +120,6 @@ class NotAnotherSMAOffsetStrategyX1(IStrategy):
     sell_profit_only = False
     sell_profit_offset = 0.01
     ignore_roi_if_buy_signal = False
-
-    ## Optional order time in force.
-    order_time_in_force = {
-        'buy': 'gtc',
-        'sell': 'ioc'
-    }
 
     # Optimal timeframe for the strategy
     timeframe = '5m'
