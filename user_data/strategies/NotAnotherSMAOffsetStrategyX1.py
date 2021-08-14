@@ -104,6 +104,33 @@ class NotAnotherSMAOffsetStrategyX1(IStrategy):
     pPF_2 = DecimalParameter(0.040, 0.100, default=0.080, decimals=3, space='sell', optimize=True, load=True)
     pSL_2 = DecimalParameter(0.020, 0.070, default=0.040, decimals=3, space='sell', optimize=True, load=True)
 
+    protections = [
+        #   {
+        #       "method": "StoplossGuard",
+        #       "lookback_period_candles": 12,
+        #       "trade_limit": 1,
+        #       "stop_duration_candles": 6,
+        #       "only_per_pair": True
+        #   },
+        #   {
+        #       "method": "StoplossGuard",
+        #       "lookback_period_candles": 12,
+        #       "trade_limit": 2,
+        #       "stop_duration_candles": 6,
+        #       "only_per_pair": False
+        #   },
+        {
+            "method": "LowProfitPairs",
+            "lookback_period_candles": 60,
+            "trade_limit": 1,
+            "stop_duration": 60,
+            "required_profit": -0.05
+        },
+        {
+            "method": "CooldownPeriod",
+            "stop_duration_candles": 2
+        }
+    ]
 
     # Trailing stop:
     trailing_stop = False
