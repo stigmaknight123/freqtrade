@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 from freqtrade.persistence import Trade
 from freqtrade.strategy import stoploss_from_open, merge_informative_pair, DecimalParameter, IntParameter, CategoricalParameter
 import technical.indicators as ftt
+import pandas_ta as pta
 
 # @Rallipanos
 
@@ -152,7 +153,8 @@ class NotAnotherSMAOffsetStrategy(IStrategy):
             dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'] = ta.EMA(dataframe, timeperiod=self.base_nb_candles_buy.value)
             dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] = ta.EMA(dataframe, timeperiod=self.base_nb_candles_sell.value)
 
-        dataframe['hma_50'] = qtpylib.hull_moving_average(dataframe['close'], window=50)
+        # dataframe['hma_50'] = qtpylib.hull_moving_average(dataframe['close'], window=50)
+        dataframe['hma_50'] = pta.hma(dataframe['close'], 50)
         dataframe['ema_100'] = ta.EMA(dataframe, timeperiod=100)          
 
         dataframe['sma_9'] = ta.SMA(dataframe, timeperiod=9)
