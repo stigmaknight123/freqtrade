@@ -1,6 +1,6 @@
 {
     "max_open_trades": 4,
-    "stake_currency": "USDT",
+    "stake_currency": "BUSD",
     "stake_amount" : "unlimited",
     "amend_last_stake_amount ": true,
     "tradable_balance_ratio": 0.99,
@@ -9,12 +9,13 @@
     "dry_run_wallet": 70,
     "cancel_open_orders_on_exit": false,
     "unfilledtimeout": {
-        "buy": 10,
-        "sell": 30
+        "buy": 30,
+        "sell": 10,
+        "unit": "seconds"
     },
     "order_types": {
-        "buy": "market",
-        "sell": "market",
+        "buy": "limit",
+        "sell": "limit",
         "forcesell": "market",
         "emergencysell": "market",
         "trailing_stop_loss": "market",
@@ -23,7 +24,7 @@
         "stoploss_on_exchange_interval": 60
     },
     "bid_strategy": {
-        "price_side": "ask",
+        "price_side": "bid",
         "ask_last_balance": 0.0,
         "use_order_book": false,
         "order_book_top": 1,
@@ -33,7 +34,7 @@
         }
     },
     "ask_strategy": {
-        "price_side": "bid",
+        "price_side": "ask",
         "use_order_book": false,
         "order_book_min": 1,
         "order_book_max": 1
@@ -44,7 +45,7 @@
             "number_assets": 60,
             "sort_key": "quoteVolume"
         },
-        {"method": "AgeFilter", "min_days_listed": 30},
+        {"method": "AgeFilter", "min_days_listed": 20},
         {
             "method": "VolatilityFilter",
             "lookback_days": 4,
@@ -60,7 +61,7 @@
             "refresh_period": 1440
         },
         {"method": "PerformanceFilter"},
-        {"method": "PriceFilter", "low_price_ratio": 0.01}
+        {"method": "PriceFilter", "low_price_ratio": 0.001}
     ],
     "edge": {
         "enabled": false,
@@ -90,7 +91,7 @@
     "initial_state": "running",
     "forcebuy_enable": false,
     "internals": {
-        "process_throttle_secs": 5
+        "process_throttle_secs": 2
     },
     "db_url": "sqlite:////freqtrade/user_data/tradesv3.sqlite",
     "user_data_dir" : "user_data",

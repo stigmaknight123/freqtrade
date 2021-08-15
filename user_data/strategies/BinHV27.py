@@ -30,6 +30,11 @@ class BinHV27(IStrategy):
     stoploss = -0.50
     timeframe = '5m'
 
+    buy_low_sma = IntParameter(low=50, high=120, default=60, optimize= False)
+    buy_high_sma = IntParameter(low=100, high=300, default=120, optimize= False)
+    buy_fast_sma = IntParameter(low=50, high=120, default=120, optimize= False)
+    buy_slow_sma = IntParameter(low=100, high=300, default=240, optimize= False)
+
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe['rsi'] = numpy.nan_to_num(ta.RSI(dataframe, timeperiod=5))
         rsiframe = DataFrame(dataframe['rsi']).rename(columns={'rsi': 'close'})
@@ -41,10 +46,10 @@ class BinHV27(IStrategy):
         dataframe['plusdi'] = numpy.nan_to_num(ta.PLUS_DI(dataframe))
         plusdiframe = DataFrame(dataframe['plusdi']).rename(columns={'plusdi': 'close'})
         dataframe['plusdiema'] = numpy.nan_to_num(ta.EMA(plusdiframe, timeperiod=5))
-        dataframe['lowsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=60))
-        dataframe['highsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=120))
-        dataframe['fastsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=120))
-        dataframe['slowsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=240))
+        dataframe['lowsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_low_sma.value))
+        dataframe['highsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_high_sma.value))
+        dataframe['fastsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_fast_sma.value))
+        dataframe['slowsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_slow_sma.value))
         dataframe['bigup'] = dataframe['fastsma'].gt(dataframe['slowsma']) & ((dataframe['fastsma'] - dataframe['slowsma']) > dataframe['close'] / 300)
         dataframe['bigdown'] = ~dataframe['bigup']
         dataframe['trend'] = dataframe['fastsma'] - dataframe['slowsma']
