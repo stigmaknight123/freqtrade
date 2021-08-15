@@ -34,6 +34,20 @@ class BinHV27(IStrategy):
     buy_high_sma = IntParameter(low=100, high=300, default=120, optimize= False)
     buy_fast_sma = IntParameter(low=50, high=120, default=120, optimize= False)
     buy_slow_sma = IntParameter(low=100, high=300, default=240, optimize= False)
+    buy_minusdi_ema = IntParameter(low=5, high=50, default=25, optimize= False)
+    buy_plusdi_ema = IntParameter(low=5, high=50, default=5, optimize= False)
+
+    buy_adx_1 = IntParameter(low=5, high=50, default=25, optimize= False)
+    buy_emarsi_1 = IntParameter(low=5, high=50, default=20, optimize= False)
+
+    buy_adx_2 = IntParameter(low=5, high=50, default=30, optimize= False)
+    buy_emarsi_2 = IntParameter(low=5, high=50, default=20, optimize= False)
+
+    buy_adx_3 = IntParameter(low=5, high=50, default=35, optimize= False)
+    buy_emarsi_3 = IntParameter(low=5, high=50, default=20, optimize= False)
+
+    buy_adx_4 = IntParameter(low=5, high=50, default=30, optimize= False)
+    buy_emarsi_4 = IntParameter(low=5, high=50, default=25, optimize= False)
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe['rsi'] = numpy.nan_to_num(ta.RSI(dataframe, timeperiod=5))
@@ -42,10 +56,10 @@ class BinHV27(IStrategy):
         dataframe['adx'] = numpy.nan_to_num(ta.ADX(dataframe))
         dataframe['minusdi'] = numpy.nan_to_num(ta.MINUS_DI(dataframe))
         minusdiframe = DataFrame(dataframe['minusdi']).rename(columns={'minusdi': 'close'})
-        dataframe['minusdiema'] = numpy.nan_to_num(ta.EMA(minusdiframe, timeperiod=25))
+        dataframe['minusdiema'] = numpy.nan_to_num(ta.EMA(minusdiframe, timeperiod=self.buy_minusdi_ema.value))
         dataframe['plusdi'] = numpy.nan_to_num(ta.PLUS_DI(dataframe))
         plusdiframe = DataFrame(dataframe['plusdi']).rename(columns={'plusdi': 'close'})
-        dataframe['plusdiema'] = numpy.nan_to_num(ta.EMA(plusdiframe, timeperiod=5))
+        dataframe['plusdiema'] = numpy.nan_to_num(ta.EMA(plusdiframe, timeperiod=self.buy_plusdi_ema.value))
         dataframe['lowsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_low_sma.value))
         dataframe['highsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_high_sma.value))
         dataframe['fastsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_fast_sma.value))
@@ -70,26 +84,26 @@ class BinHV27(IStrategy):
               (
                 ~dataframe['preparechangetrend'] &
                 ~dataframe['continueup'] &
-                dataframe['adx'].gt(25) &
+                dataframe['adx'].gt(self.buy_adx_1.value) &
                 dataframe['bigdown'] &
                 dataframe['emarsi'].le(20)
               ) |
               (
                 ~dataframe['preparechangetrend'] &
                 dataframe['continueup'] &
-                dataframe['adx'].gt(30) &
+                dataframe['adx'].gt(self.buy_adx_2.value) &
                 dataframe['bigdown'] &
                 dataframe['emarsi'].le(20)
               ) |
               (
                 ~dataframe['continueup'] &
-                dataframe['adx'].gt(35) &
+                dataframe['adx'].gt(self.buy_adx_3.value) &
                 dataframe['bigup'] &
                 dataframe['emarsi'].le(20)
               ) |
               (
                 dataframe['continueup'] &
-                dataframe['adx'].gt(30) &
+                dataframe['adx'].gt(self.buy_adx_4.value) &
                 dataframe['bigup'] &
                 dataframe['emarsi'].le(25)
               )
