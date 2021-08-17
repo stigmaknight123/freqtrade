@@ -2,6 +2,7 @@ from freqtrade.strategy.interface import IStrategy
 from typing import Dict, List
 from functools import reduce
 from pandas import DataFrame
+from freqtrade.strategy import IntParameter
 # --------------------------------
 
 import talib.abstract as ta
