@@ -50,20 +50,17 @@ class BinHV27(IStrategy):
     buy_emarsi_4 = IntParameter(low=5, high=50, default=25, optimize= False)
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+
         dataframe['rsi'] = numpy.nan_to_num(ta.RSI(dataframe, timeperiod=5))
         rsiframe = DataFrame(dataframe['rsi']).rename(columns={'rsi': 'close'})
         dataframe['emarsi'] = numpy.nan_to_num(ta.EMA(rsiframe, timeperiod=5))
         dataframe['adx'] = numpy.nan_to_num(ta.ADX(dataframe))
         dataframe['minusdi'] = numpy.nan_to_num(ta.MINUS_DI(dataframe))
         minusdiframe = DataFrame(dataframe['minusdi']).rename(columns={'minusdi': 'close'})
-        dataframe['minusdiema'] = numpy.nan_to_num(ta.EMA(minusdiframe, timeperiod=self.buy_minusdi_ema.value))
+        
         dataframe['plusdi'] = numpy.nan_to_num(ta.PLUS_DI(dataframe))
         plusdiframe = DataFrame(dataframe['plusdi']).rename(columns={'plusdi': 'close'})
-        dataframe['plusdiema'] = numpy.nan_to_num(ta.EMA(plusdiframe, timeperiod=self.buy_plusdi_ema.value))
-        dataframe['lowsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_low_sma.value))
-        dataframe['highsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_high_sma.value))
-        dataframe['fastsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_fast_sma.value))
-        dataframe['slowsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_slow_sma.value))
+        
         dataframe['bigup'] = dataframe['fastsma'].gt(dataframe['slowsma']) & ((dataframe['fastsma'] - dataframe['slowsma']) > dataframe['close'] / 300)
         dataframe['bigdown'] = ~dataframe['bigup']
         dataframe['trend'] = dataframe['fastsma'] - dataframe['slowsma']
@@ -72,8 +69,24 @@ class BinHV27(IStrategy):
         dataframe['continueup'] = dataframe['slowsma'].gt(dataframe['slowsma'].shift()) & dataframe['slowsma'].shift().gt(dataframe['slowsma'].shift(2))
         dataframe['delta'] = dataframe['fastsma'] - dataframe['fastsma'].shift()
         dataframe['slowingdown'] = dataframe['delta'].lt(dataframe['delta'].shift())
+        
+        if not self.config['runmode'].value == 'hyperopt':
+          dataframe['plusdiema'] = numpy.nan_to_num(ta.EMA(plusdiframe, timeperiod=self.buy_plusdi_ema.value))
+          dataframe['minusdiema'] = numpy.nan_to_num(ta.EMA(minusdiframe, timeperiod=self.buy_minusdi_ema.value))
+          dataframe['lowsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_low_sma.value))
+          dataframe['highsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_high_sma.value))
+          dataframe['fastsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_fast_sma.value))
+          dataframe['slowsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_slow_sma.value))
+
         return dataframe
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+        if self.config['runmode'].value == 'hyperopt':
+          dataframe['plusdiema'] = numpy.nan_to_num(ta.EMA(plusdiframe, timeperiod=self.buy_plusdi_ema.value))
+          dataframe['minusdiema'] = numpy.nan_to_num(ta.EMA(minusdiframe, timeperiod=self.buy_minusdi_ema.value))
+          dataframe['lowsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_low_sma.value))
+          dataframe['highsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_high_sma.value))
+          dataframe['fastsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_fast_sma.value))
+          dataframe['slowsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_slow_sma.value))
         dataframe.loc[
             dataframe['slowsma'].gt(0) &
             dataframe['close'].lt(dataframe['highsma']) &
@@ -111,6 +124,13 @@ class BinHV27(IStrategy):
             'buy'] = 1
         return dataframe
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+        if self.config['runmode'].value == 'hyperopt':
+          dataframe['plusdiema'] = numpy.nan_to_num(ta.EMA(plusdiframe, timeperiod=self.buy_plusdi_ema.value))
+          dataframe['minusdiema'] = numpy.nan_to_num(ta.EMA(minusdiframe, timeperiod=self.buy_minusdi_ema.value))
+          dataframe['lowsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_low_sma.value))
+          dataframe['highsma'] = numpy.nan_to_num(ta.EMA(dataframe, timeperiod=self.buy_high_sma.value))
+          dataframe['fastsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_fast_sma.value))
+          dataframe['slowsma'] = numpy.nan_to_num(ta.SMA(dataframe, timeperiod=self.buy_slow_sma.value))
         dataframe.loc[
             (
               (
