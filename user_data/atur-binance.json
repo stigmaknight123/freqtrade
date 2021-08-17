@@ -10,49 +10,20 @@
         },
         "pair_whitelist": [],
         "pair_blacklist": [
-            "BNB/.*",
-            ".*BEAR/.*",
-            ".*BULL/.*",
-            ".*UP/.*",
-            ".*DOWN/.*",
-            ".*1L/.*",
-            ".*1S/.*",
-            ".*2L/.*",
-            ".*2S/.*",
-            ".*3L/.*",
-            ".*3S/.*",
-            ".*5L/.*",
-            ".*5S/.*",
-            ".*BEAR2021/.*",
-            ".*BULL",
-            ".*BULL2021/.*",
-            ".*HALF/.*",
-            ".*HEDGE/.*",
-            ".*PERP/.*",
-            ".*PERP",
-            ".*_PREMIUM/.*",
-            ".*_PREMIUM",
-            "AED/.*",
-            "AUD/.*",
-            "ARS/.*",
-            "ASR/.*",
-            "ATM/.*",
-            "BIDR/.*",
-            ".*USD/.*",
-            "BVND/.*",
-            "CHZ/.*",
-            "DAI/.*",
-            "EUR/.*",
-            "GBP/.*",
-            "IDRT/.*",
-            "NGN/.*",
-            "PAX/.*",
-            "PSG/.*",
-            "RUB/.*",
-            "TRY/.*",
-            "USD.*/.*",
-            "UAH/.*",
-            "VAI/.*",
+            // Exchange
+            ".*(BNB)/.*",
+            // Major
+            //".*(BTC|ETH)/.*",
+            // Leverage
+            ".*(_PREMIUM|BEAR|BULL|DOWN|HALF|HEDGE|UP|[1235][SL])/.*",
+            // Fiat
+            ".*(AUD|BRZ|CAD|CHF|EUR|GBP|HKD|IDRT|JPY|NGN|RUB|SGD|TRY|UAH|USD|ZAR)/.*",
+            // Stable
+            ".*(BUSD|CUSDT|DAI|PAX|PAXG|SUSD|TUSD|USDC|USDT|VAI)/.*",
+            // FAN
+            ".*(ACM|AFA|ALA|ALL|APL|ASR|ATM|BAR|CAI|CITY|FOR|GAL|GOZ|IBFK|JUV|LEG|LOCK-1|NAVI|NMR|NOV|OG|PFL|PSG|ROUSH|STV|TH|TRA|UCH|UFC|YBO)/.*",
+            // Others
+            ".*(CHZ|CTXC|HBAR|NMR|SHIB|SLP|XVS)/.*"
         ]
     }
 }
