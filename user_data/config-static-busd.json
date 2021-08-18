@@ -170,7 +170,12 @@
             "HOT/BUSD",
             "PHA/BUSD",
             "WAVES/BUSD",
-            "IOTX/BUSD"
+            "IOTX/BUSD",
+            "AR/BUSD",
+            "HNT/BUSD",
+            "MIR/BUSD",
+            "TWT/BUSD",
+            "CTK/BUSD"
         ],
         "pair_blacklist": []
     },
