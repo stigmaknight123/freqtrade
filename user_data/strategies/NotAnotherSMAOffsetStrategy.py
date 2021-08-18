@@ -139,6 +139,14 @@ class NotAnotherSMAOffsetStrategy(IStrategy):
         }
     ]
     
+    def confirm_trade_entry(self, pair: str, order_type: str, amount: float, rate: float, time_in_force: str, **kwargs) -> bool:
+        dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
+        last_candle = dataframe.iloc[-1].squeeze()
+
+        if ((rate > last_candle['close'])) : return False
+
+        return True
+        
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         if self.config['runmode'].value == 'hyperopt':
             # Calculate all ma_buy values
