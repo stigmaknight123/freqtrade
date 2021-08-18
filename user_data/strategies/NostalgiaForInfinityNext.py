@@ -8,7 +8,6 @@ import talib.abstract as ta
 from freqtrade.misc import json_load, file_dump_json
 from freqtrade.strategy.interface import IStrategy
 from freqtrade.strategy import merge_informative_pair, timeframe_to_minutes
-from freqtrade.strategy import DecimalParameter, IntParameter, CategoricalParameter
 from freqtrade.exchange import timeframe_to_prev_date
 from pandas import DataFrame, Series, concat
 from functools import reduce
@@ -17,9 +16,17 @@ from freqtrade.persistence import Trade
 from datetime import datetime, timedelta
 from technical.util import resample_to_interval, resampled_merge
 from technical.indicators import zema, VIDYA, ichimoku
-import pandas_ta as pta
+
 
 log = logging.getLogger(__name__)
+
+
+try:
+    import pandas_ta as pta
+except ImportError:
+    log.error("IMPORTANT - please install the pandas_ta python module which is needed for this strategy. If you're running Docker, add RUN pip install pandas_ta to your Dockerfile, otherwise run: pip install pandas_ta")
+else:
+    log.info("pandas_ta successfully imported")
 
 
 ###########################################################################################################
@@ -58,6 +65,7 @@ log = logging.getLogger(__name__)
 ##      output of the telegram status command.                                                           ##
 ##    * Regardless of the defined profit ratio(s), the strategy MUST still produce a SELL signal for the ##
 ##      HOLD support logic to run                                                                        ##
+##    * This feature can be completely disabled with the holdSupportEnabled parameter                    ##
 ##                                                                                                       ##
 ###########################################################################################################
 ##               DONATIONS                                                                               ##
@@ -114,6 +122,9 @@ class NostalgiaForInfinityNext(IStrategy):
 
     # Exchange Downtime protection
     has_downtime_protection = False
+
+    # Do you want to use the hold feature? (with hold-trades.json)
+    holdSupportEnabled = True
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = True
@@ -183,6 +194,7 @@ class NostalgiaForInfinityNext(IStrategy):
         "buy_condition_41_enable": True,
         "buy_condition_42_enable": True,
         "buy_condition_43_enable": True,
+        "buy_condition_44_enable": True,
         #############
     }
 
@@ -646,20 +658,20 @@ class NostalgiaForInfinityNext(IStrategy):
         23: {
             "ema_fast"                  : False,
             "ema_fast_len"              : "50",
-            "ema_slow"                  : False,
-            "ema_slow_len"              : "50",
-            "close_above_ema_fast"      : True,
+            "ema_slow"                  : True,
+            "ema_slow_len"              : "15",
+            "close_above_ema_fast"      : False,
             "close_above_ema_fast_len"  : "200",
-            "close_above_ema_slow"      : True,
+            "close_above_ema_slow"      : False,
             "close_above_ema_slow_len"  : "200",
-            "sma200_rising"             : False,
-            "sma200_rising_val"         : "50",
+            "sma200_rising"             : True,
+            "sma200_rising_val"         : "24",
             "sma200_1h_rising"          : False,
             "sma200_1h_rising_val"      : "50",
             "safe_dips"                 : True,
-            "safe_dips_type"            : "50",
-            "safe_pump"                 : False,
-            "safe_pump_type"            : "50",
+            "safe_dips_type"            : "110",
+            "safe_pump"                 : True,
+            "safe_pump_type"            : "100",
             "safe_pump_period"          : "24",
             "btc_1h_not_downtrend"      : False
         },
@@ -712,14 +724,14 @@ class NostalgiaForInfinityNext(IStrategy):
             "close_above_ema_fast_len"  : "200",
             "close_above_ema_slow"      : False,
             "close_above_ema_slow_len"  : "200",
-            "sma200_rising"             : False,
+            "sma200_rising"             : True,
             "sma200_rising_val"         : "30",
             "sma200_1h_rising"          : False,
             "sma200_1h_rising_val"      : "50",
-            "safe_dips"                 : False,
-            "safe_dips_type"            : "10",
-            "safe_pump"                 : False,
-            "safe_pump_type"            : "10",
+            "safe_dips"                 : True,
+            "safe_dips_type"            : "70",
+            "safe_pump"                 : True,
+            "safe_pump_type"            : "20",
             "safe_pump_period"          : "36",
             "btc_1h_not_downtrend"      : True
         },
@@ -816,8 +828,8 @@ class NostalgiaForInfinityNext(IStrategy):
             "sma200_rising_val"         : "30",
             "sma200_1h_rising"          : False,
             "sma200_1h_rising_val"      : "50",
-            "safe_dips"                 : False,
-            "safe_dips_type"            : "110",
+            "safe_dips"                 : True,
+            "safe_dips_type"            : "50",
             "safe_pump"                 : False,
             "safe_pump_type"            : "10",
             "safe_pump_period"          : "48",
@@ -1006,7 +1018,7 @@ class NostalgiaForInfinityNext(IStrategy):
         41: {
             "ema_fast"                  : False,
             "ema_fast_len"              : "12",
-            "ema_slow"                  : True,
+            "ema_slow"                  : False,
             "ema_slow_len"              : "12",
             "close_above_ema_fast"      : False,
             "close_above_ema_fast_len"  : "200",
@@ -1062,6 +1074,26 @@ class NostalgiaForInfinityNext(IStrategy):
             "safe_pump_type"            : "100",
             "safe_pump_period"          : "24",
             "btc_1h_not_downtrend"      : True
+        },
+        44: {
+            "ema_fast"                  : False,
+            "ema_fast_len"              : "12",
+            "ema_slow"                  : False,
+            "ema_slow_len"              : "12",
+            "close_above_ema_fast"      : False,
+            "close_above_ema_fast_len"  : "200",
+            "close_above_ema_slow"      : False,
+            "close_above_ema_slow_len"  : "200",
+            "sma200_rising"             : False,
+            "sma200_rising_val"         : "30",
+            "sma200_1h_rising"          : False,
+            "sma200_1h_rising_val"      : "20",
+            "safe_dips"                 : False,
+            "safe_dips_type"            : "100",
+            "safe_pump"                 : False,
+            "safe_pump_type"            : "100",
+            "safe_pump_period"          : "24",
+            "btc_1h_not_downtrend"      : False
         }
     }
 
@@ -1381,10 +1413,13 @@ class NostalgiaForInfinityNext(IStrategy):
     buy_ewo_22 = 5.8
     buy_rsi_22 = 36.0
 
-    buy_bb_offset_23 = 0.985
-    buy_ewo_23 = 6.2
-    buy_rsi_23 = 32.4
-    buy_rsi_1h_23 = 70.0
+    buy_23_bb_offset = 0.984
+    buy_23_ewo = 7.8
+    buy_23_rsi = 32.4
+    buy_23_rsi_1h = 80.0
+    buy_23_cti = -0.66
+    buy_23_r = -80.0
+    buy_23_r_1h = -80.0
 
     buy_24_rsi_max = 50.0
     buy_24_rsi_1h_min = 66.9
@@ -1393,10 +1428,10 @@ class NostalgiaForInfinityNext(IStrategy):
     buy_25_rsi_4 = 38.0
     buy_25_cti = -0.76
 
-    buy_26_zema_low_offset = 0.9
-    buy_26_cti = -0.9
-    buy_26_r = -80.0
-    buy_26_r_1h = -80.0
+    buy_26_zema_low_offset = 0.94
+    buy_26_cti = -0.91
+    buy_26_r = -35.0
+    buy_26_r_1h = -60.0
     buy_26_volume = 2.0
 
     buy_27_wr_max = 90.0
@@ -1419,9 +1454,10 @@ class NostalgiaForInfinityNext(IStrategy):
     buy_30_rsi = 40.0
     buy_30_cti = -0.88
 
-    buy_31_ma_offset = 0.94
-    buy_31_ewo = -19.0
-    buy_31_wr = -98.4
+    buy_31_ma_offset = 0.962
+    buy_31_ewo = -10.4
+    buy_31_wr = -90.0
+    buy_31_cti = -0.89
 
     buy_32_ma_offset = 0.934
     buy_32_dip = 0.005
@@ -1488,6 +1524,11 @@ class NostalgiaForInfinityNext(IStrategy):
     buy_43_cti = -0.6
     buy_43_r = -90.0
 
+    buy_44_ma_offset = 0.982
+    buy_44_ewo = -18.143
+    buy_44_cti = -0.8
+    buy_44_r_1h = -75.0
+
     # Sell
 
     sell_condition_1_enable = True
@@ -1544,9 +1585,9 @@ class NostalgiaForInfinityNext(IStrategy):
     sell_custom_profit_bull_4 = 0.05
     sell_custom_rsi_under_bull_4 = 42.0
     sell_custom_profit_bull_5 = 0.06
-    sell_custom_rsi_under_bull_5 = 45.0
+    sell_custom_rsi_under_bull_5 = 49.0
     sell_custom_profit_bull_6 = 0.07
-    sell_custom_rsi_under_bull_6 = 48.0
+    sell_custom_rsi_under_bull_6 = 50.0
     sell_custom_profit_bull_7 = 0.08
     sell_custom_rsi_under_bull_7 = 54.0
     sell_custom_profit_bull_8 = 0.09
@@ -1712,7 +1753,7 @@ class NostalgiaForInfinityNext(IStrategy):
 
     # Under & near EMA200, accept profit
     sell_custom_profit_under_profit_min_1 = 0.001
-    sell_custom_profit_under_profit_max_1 = 0.01
+    sell_custom_profit_under_profit_max_1 = 0.008
     sell_custom_profit_under_rel_1 = 0.024
     sell_custom_profit_under_rsi_diff_1 = 4.4
 
@@ -1786,6 +1827,49 @@ class NostalgiaForInfinityNext(IStrategy):
     sell_custom_long_duration_min_1 = 900
 
     #############################################################
+
+    hold_trades_cache = None
+
+    @staticmethod
+    def get_hold_trades_config_file():
+        strat_file_path = pathlib.Path(__file__)
+        hold_trades_config_file_resolve = strat_file_path.resolve().parent / "hold-trades.json"
+        if hold_trades_config_file_resolve.is_file():
+            return hold_trades_config_file_resolve
+
+        # The resolved path does not exist, is it a symlink?
+        hold_trades_config_file_absolute = strat_file_path.absolute().parent / "hold-trades.json"
+        if hold_trades_config_file_absolute.is_file():
+            return hold_trades_config_file_absolute
+
+        if hold_trades_config_file_resolve != hold_trades_config_file_absolute:
+            looked_in = f"'{hold_trades_config_file_resolve}' and '{hold_trades_config_file_absolute}'"
+        else:
+            looked_in = f"'{hold_trades_config_file_resolve}'"
+        log.warning(
+            "The 'hold-trades.json' file was not found. Looked in %s. HOLD support disabled.",
+            looked_in
+        )
+
+    def load_hold_trades_config(self):
+        if self.hold_trades_cache is None:
+            hold_trades_config_file = NostalgiaForInfinityNext.get_hold_trades_config_file()
+            if hold_trades_config_file:
+                self.hold_trades_cache = HoldsCache(hold_trades_config_file)
+
+        if self.hold_trades_cache:
+            self.hold_trades_cache.load()
+
+    def bot_loop_start(self, **kwargs) -> None:
+        """
+        Called at the start of the bot iteration (one loop).
+        Might be used to perform pair-independent tasks
+        (e.g. gather some remote resource for comparison)
+        :param **kwargs: Ensure to keep this here so updates to this won't break your strategy.
+        """
+        if self.holdSupportEnabled and self.config['runmode'].value in ('live', 'dry_run'):
+            self.load_hold_trades_config()
+        return super().bot_loop_start(**kwargs)
 
     def get_ticker_indicator(self):
         return int(self.timeframe[:-1])
@@ -2257,10 +2341,10 @@ class NostalgiaForInfinityNext(IStrategy):
             elif (current_profit < -0.08):
                 return True, 'signal_stoploss_q_atr'
 
-        if (current_profit > 0.02) and (last_candle['pm'] <= last_candle['pmax_thresh']) and (last_candle['close'] > last_candle['sma_21'] * 1.1):
-                return True, 'signal_profit_q_pmax_bull'
-        if (current_profit > 0.001) and (last_candle['pm'] > last_candle['pmax_thresh']) and (last_candle['close'] > last_candle['sma_21'] * 1.016):
-                return True, 'signal_profit_q_pmax_bear'
+        if (0.04 > current_profit > 0.02) and (last_candle['pm'] <= last_candle['pmax_thresh']) and (last_candle['close'] > last_candle['sma_21'] * 1.1):
+            return True, 'signal_profit_q_pmax_bull'
+        if (0.045 > current_profit > 0.003) and (last_candle['pm'] > last_candle['pmax_thresh']) and (last_candle['close'] > last_candle['sma_21'] * 1.016):
+            return True, 'signal_profit_q_pmax_bear'
 
         return False, None
 
@@ -2438,7 +2522,7 @@ class NostalgiaForInfinityNext(IStrategy):
         # Sell signal 6
         elif self.sell_condition_6_enable and (last_candle['close'] < last_candle['ema_200']) and (last_candle['close'] > last_candle['ema_50']) and (last_candle['rsi_14'] > self.sell_rsi_under_6):
             if (current_profit > 0.0):
-                    return 'sell_signal_6_1' + ' ( ' + buy_tag + ')'
+                return 'sell_signal_6_1' + ' ( ' + buy_tag + ')'
             elif (max_loss > 0.25):
                 return 'sell_signal_6_2' + ' ( ' + buy_tag + ')'
 
@@ -2714,6 +2798,7 @@ class NostalgiaForInfinityNext(IStrategy):
         dataframe['ema_12'] = ta.EMA(dataframe, timeperiod=12)
         dataframe['ema_13'] = ta.EMA(dataframe, timeperiod=13)
         dataframe['ema_15'] = ta.EMA(dataframe, timeperiod=15)
+        dataframe['ema_16'] = ta.EMA(dataframe, timeperiod=16)
         dataframe['ema_20'] = ta.EMA(dataframe, timeperiod=20)
         dataframe['ema_25'] = ta.EMA(dataframe, timeperiod=25)
         dataframe['ema_26'] = ta.EMA(dataframe, timeperiod=26)
@@ -3222,10 +3307,13 @@ class NostalgiaForInfinityNext(IStrategy):
                     # Non-Standard protections
 
                     # Logic
-                    item_buy_logic.append(dataframe['close'] < (dataframe['bb20_2_low'] * self.buy_bb_offset_23))
-                    item_buy_logic.append(dataframe['ewo'] > self.buy_ewo_23)
-                    item_buy_logic.append(dataframe['rsi_14'] < self.buy_rsi_23)
-                    item_buy_logic.append(dataframe['rsi_14_1h'] < self.buy_rsi_1h_23)
+                    item_buy_logic.append(dataframe['close'] < (dataframe['bb20_2_low'] * self.buy_23_bb_offset))
+                    item_buy_logic.append(dataframe['ewo'] > self.buy_23_ewo)
+                    item_buy_logic.append(dataframe['cti'] < self.buy_23_cti)
+                    item_buy_logic.append(dataframe['r_480'] > self.buy_23_r)
+                    item_buy_logic.append(dataframe['r_480_1h'] > self.buy_23_r_1h)
+                    item_buy_logic.append(dataframe['rsi_14'] < self.buy_23_rsi)
+                    item_buy_logic.append(dataframe['rsi_14_1h'] < self.buy_23_rsi_1h)
 
                 # Condition #24
                 elif index == 24:
@@ -3319,6 +3407,7 @@ class NostalgiaForInfinityNext(IStrategy):
                     item_buy_logic.append(dataframe['close'] < dataframe['zlema_68'] * self.buy_31_ma_offset )
                     item_buy_logic.append(dataframe['ewo'] < self.buy_31_ewo)
                     item_buy_logic.append(dataframe['r_480'] < self.buy_31_wr)
+                    item_buy_logic.append(dataframe['cti'] < self.buy_31_cti)
 
                 # Condition #32 - Quick mode buy
                 elif index == 32:
@@ -3484,6 +3573,16 @@ class NostalgiaForInfinityNext(IStrategy):
                     item_buy_logic.append(dataframe['cti'] < self.buy_43_cti)
                     item_buy_logic.append(dataframe['r_480'] > self.buy_43_r)
 
+                # Condition #44
+                elif index == 44:
+                    # Non-Standard protections
+
+                    # Logic
+                    item_buy_logic.append(dataframe['close'] < (dataframe['ema_16'] * self.buy_44_ma_offset))
+                    item_buy_logic.append(dataframe['ewo'] < self.buy_44_ewo)
+                    item_buy_logic.append(dataframe['cti'] < self.buy_44_cti)
+                    item_buy_logic.append(dataframe['r_480_1h'] < self.buy_44_r_1h)
+
                 item_buy_logic.append(dataframe['volume'] > 0)
                 item_buy = reduce(lambda x, y: x & y, item_buy_logic)
                 dataframe.loc[item_buy, 'buy_tag'] += str(index) + ' '
@@ -3524,7 +3623,7 @@ class NostalgiaForInfinityNext(IStrategy):
             False aborts the process
         """
         # Just to be sure our hold data is loaded, should be a no-op call after the first bot loop
-        if self.config['runmode'].value in ('live', 'dry_run'):
+        if self.holdSupportEnabled and self.config['runmode'].value in ('live', 'dry_run'):
             self.load_hold_trades_config()
 
             if not self.hold_trades_cache:
@@ -3603,7 +3702,7 @@ def williams_r(dataframe: DataFrame, period: int = 14) -> Series:
     WR = Series(
         (highest_high - dataframe["close"]) / (highest_high - lowest_low),
         name="{0} Williams %R".format(period),
-    )
+        )
 
     return WR * -100
 
