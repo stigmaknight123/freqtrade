@@ -11,7 +11,6 @@ import freqtrade.vendor.qtpylib.indicators as qtpylib
 import datetime
 from technical.util import resample_to_interval, resampled_merge
 from datetime import datetime, timedelta
-from freqtrade.exchange import timeframe_to_prev_date
 from freqtrade.persistence import Trade
 from freqtrade.strategy import stoploss_from_open, merge_informative_pair, DecimalParameter, IntParameter, CategoricalParameter
 import technical.indicators as ftt
@@ -51,11 +50,14 @@ class RalliV1(IStrategy):
 
     # ROI table:
     minimal_roi = {
-        "0": 10
+        "0": 0.04,
+        "40": 0.032,
+        "87": 0.018,
+        "201": 0
     }
 
     # Stoploss:
-    stoploss = -0.99
+    stoploss = -0.3
 
     # SMAOffset
     base_nb_candles_buy = IntParameter(
@@ -87,7 +89,7 @@ class RalliV1(IStrategy):
 
     # Trailing stop:
     trailing_stop = False
-    trailing_stop_positive = 0.005
+    trailing_stop_positive = 0.01
     trailing_stop_positive_offset = 0.03
     trailing_only_offset_is_reached = True
 
@@ -124,72 +126,26 @@ class RalliV1(IStrategy):
         }
     ]
 
-    def custom_sell(self, pair: str, trade: 'Trade', current_time: 'datetime', current_rate: float,
-                    current_profit: float, **kwargs):
+    def confirm_trade_entry(self, pair: str, order_type: str, amount: float, rate: float, time_in_force: str, **kwargs) -> bool:
         dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
-
-        buy_tag = 'empty'
-        if hasattr(trade, 'buy_tag') and trade.buy_tag is not None:
-            buy_tag = trade.buy_tag
-        else:
-            trade_open_date = timeframe_to_prev_date(self.timeframe, trade.open_date_utc)
-            buy_signal = dataframe.loc[dataframe['date'] < trade_open_date]
-            if not buy_signal.empty:
-                buy_signal_candle = buy_signal.iloc[-1]
-                buy_tag = buy_signal_candle['buy_tag'] if buy_signal_candle['buy_tag'] != '' else 'empty'
-        buy_tags = buy_tag.split()
-
-        current_profit = trade.calc_profit_ratio(current_rate)
-
-        if (current_profit <= -0.3):
-            return 'stoploss ( ' + buy_tag + ')'
-
-        trade_time_40 = trade.open_date_utc + timedelta(minutes=40)
-        trade_time_87 = trade.open_date_utc + timedelta(minutes=87)
-        trade_time_201 = trade.open_date_utc + timedelta(minutes=201)
-
-        if (current_time < trade_time_40):
-            if(current_profit >= 0.04):
-                return 'roi 0 ( ' + buy_tag + ')'
-        elif (current_time >= trade_time_40) and (current_time < trade_time_87):
-            if(current_profit >= 0.032):
-                return 'roi 40 ( ' + buy_tag + ')'
-        elif (current_time >= trade_time_87) and (current_time < trade_time_201):
-            if(current_profit >= 0.018):
-                return 'roi 87 ( ' + buy_tag + ')'
-        elif (current_time >= trade_time_201):
-            if(current_profit >= 0):
-                return 'roi 201 ( ' + buy_tag + ')'
-
         last_candle = dataframe.iloc[-1]
 
-        sell_1 = (   
-            (last_candle['hma_50'] > last_candle['ema_100'])&
-            (last_candle['close'] > last_candle['sma_9'])&
-            (last_candle['close'] > (last_candle[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset_2.value)) &
-            (last_candle['rsi_fast'] > last_candle['rsi_slow'])
-        )
+        if ((rate > last_candle['close'])) : return False
 
-        sell_2 = (   
-            (last_candle['close'] < last_candle['ema_100'])&
-            (last_candle['close'] > (last_candle[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value)) &
-            (last_candle['rsi_fast'] > last_candle['rsi_slow'])       
-        )
+        return True
 
-        sell_3 = (last_candle['rsi'] > 45 )
+    def confirm_trade_exit(self, pair: str, trade: Trade, order_type: str, amount: float,
+                           rate: float, time_in_force: str, sell_reason: str,
+                           current_time: datetime, **kwargs) -> bool:
 
-        sell_4 = (last_candle['hma_50'] < last_candle['ema_100'])
+        dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
+        last_candle = dataframe.iloc[-1]
 
-        if (sell_1 and sell_3):
-            return 'sell 1-3 ( ' + buy_tag + ')'
-        elif (sell_1 and sell_4):
-            return 'sell 1-4 ( ' + buy_tag + ')'
-        elif (sell_2 and sell_3):
-            return 'sell 2-3 ( ' + buy_tag + ')'
-        elif (sell_2 and sell_4):
-            return 'sell 2-4 ( ' + buy_tag + ')'
-
-        return None
+        if (last_candle is not None):
+            if (sell_reason in ['sell_signal']):
+                if (last_candle['rsi'] < 45 ) and (last_candle['hma_50'] > last_candle['ema_100']): #*1.2
+                    return False
+        return True
     
     use_custom_stoploss = True
     
@@ -238,14 +194,14 @@ class RalliV1(IStrategy):
 
         buy_1 = (
             (dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'] < dataframe['ema_100'])&
-            (dataframe['sma_9'] < dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'])&
-            (dataframe['rsi_fast'] <35)&
-            (dataframe['rsi_fast'] >4)&
-            (dataframe['close'] < (dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'] * self.low_offset.value)) &
-            (dataframe['EWO'] > self.ewo_high.value) &
-            (dataframe['rsi'] < self.rsi_buy_2.value) &
-            (dataframe['volume'] > 0)&
-            (dataframe['close'] < (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value))
+                (dataframe['sma_9'] < dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'])&
+                (dataframe['rsi_fast'] <35)&
+                (dataframe['rsi_fast'] >4)&
+                (dataframe['close'] < (dataframe[f'ma_buy_{self.base_nb_candles_buy.value}'] * self.low_offset.value)) &
+                (dataframe['EWO'] > self.ewo_high.value) &
+                (dataframe['rsi'] < self.rsi_buy_2.value) &
+                (dataframe['volume'] > 0)&
+                (dataframe['close'] < (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value))
         )
         dataframe.loc[buy_1, 'buy_tag'] += '1 '
         conditions.append(buy_1)
@@ -323,6 +279,29 @@ class RalliV1(IStrategy):
         return dataframe
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        dataframe.loc[:, 'sell'] = 0
+        conditions = []
+
+        conditions.append(
+            (   (dataframe['hma_50']>dataframe['ema_100'])&
+                (dataframe['close']>dataframe['sma_9'])&
+                (dataframe['close'] > (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset_2.value)) &
+                (dataframe['volume'] > 0)&
+                (dataframe['rsi_fast']>dataframe['rsi_slow'])
+            )
+            |
+            (   
+                (dataframe['close']<dataframe['ema_100'])&
+                (dataframe['close'] > (dataframe[f'ma_sell_{self.base_nb_candles_sell.value}'] * self.high_offset.value)) &
+                (dataframe['volume'] > 0)&
+                (dataframe['rsi_fast']>dataframe['rsi_slow'])       
+            )    
+            
+        )
+
+        if conditions:
+            dataframe.loc[
+                reduce(lambda x, y: x | y, conditions),
+                'sell'
+            ]=1
 
         return dataframe
