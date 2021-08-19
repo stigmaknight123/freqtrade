@@ -119,6 +119,13 @@ class RalliV1(IStrategy):
         },
     }
 
+    protections = [
+        {
+            "method": "CooldownPeriod",
+            "stop_duration_candles": 2
+        }
+    ]
+
     # def confirm_trade_entry(self, pair: str, order_type: str, amount: float, rate: float, time_in_force: str, **kwargs) -> bool:
     #     dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
     #     last_candle = dataframe.iloc[-1]
