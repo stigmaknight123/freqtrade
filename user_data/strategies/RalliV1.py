@@ -118,13 +118,49 @@ class RalliV1(IStrategy):
             'ma_sell': {'color': 'orange'},
         },
     }
+
+    protections = [
+        #   {
+        #       "method": "StoplossGuard",
+        #       "lookback_period_candles": 12,
+        #       "trade_limit": 1,
+        #       "stop_duration_candles": 6,
+        #       "only_per_pair": True
+        #   },
+        #   {
+        #       "method": "StoplossGuard",
+        #       "lookback_period_candles": 12,
+        #       "trade_limit": 2,
+        #       "stop_duration_candles": 6,
+        #       "only_per_pair": False
+        #   },
+        {
+            "method": "LowProfitPairs",
+            "lookback_period_candles": 60,
+            "trade_limit": 1,
+            "stop_duration": 60,
+            "required_profit": -0.05
+        },
+        {
+            "method": "CooldownPeriod",
+            "stop_duration_candles": 2
+        }
+    ]
+
+    def confirm_trade_entry(self, pair: str, order_type: str, amount: float, rate: float, time_in_force: str, **kwargs) -> bool:
+        dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
+        last_candle = dataframe.iloc[-1].squeeze()
+
+        if ((rate > last_candle['close'])) : return False
+
+        return True
+
     def confirm_trade_exit(self, pair: str, trade: Trade, order_type: str, amount: float,
                            rate: float, time_in_force: str, sell_reason: str,
                            current_time: datetime, **kwargs) -> bool:
 
         dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
         last_candle = dataframe.iloc[-1]
-
 
         if (last_candle is not None):
             if (sell_reason in ['sell_signal']):
