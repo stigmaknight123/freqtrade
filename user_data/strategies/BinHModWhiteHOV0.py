@@ -46,9 +46,9 @@ class BinHModWhiteHOV0(IStrategy):
         "ewo_base": 70,
         "ewo_high": 2.9,
         "ewo_step": 90,
-        "protection_one": True,  # value loaded from strategy
-        "protection_three": True,  # value loaded from strategy
-        "protection_two": True,  # value loaded from strategy
+        "buy_protection_one": True,  # value loaded from strategy
+        "buy_protection_three": True,  # value loaded from strategy
+        "buy_protection_two": True,  # value loaded from strategy
     }
 
     # Sell hyperspace params:
@@ -60,9 +60,9 @@ class BinHModWhiteHOV0(IStrategy):
     stoploss = -0.3
 
     # Protections
-    protection_one = CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True)
-    protection_two = CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True)
-    protection_three = CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True)
+    buy_protection_one = CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True)
+    buy_protection_two = CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True)
+    buy_protection_three = CategoricalParameter([True, False], default=True, space='buy', optimize=False, load=True)
     
     # Buy
     ema_trend = CategoricalParameter([50, 70, 90, 110], default=buy_params['ema_trend'], space='buy', optimize=True, load=True)
@@ -120,17 +120,6 @@ class BinHModWhiteHOV0(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
     
-        # EMA protect
-        for val in range(50, 130, 20):
-            dataframe[f'ema_trend_{val}'] = ta.EMA(dataframe, timeperiod=val)        
-        for val in range(140, 320, 20):
-            dataframe[f'ema_slow_{val}'] = ta.EMA(dataframe, timeperiod=val)
-                         
-        # Elliot
-        for val in range(50, 170, 10):
-            for step in range(10, 170, 10):
-            	dataframe[f'EWO_{val}_{step}'] = EWO(dataframe, (val), (val + step))
-            	
         # Bottoms and Tops
         dataframe['bottom'] = dataframe[['open', 'close']].min(axis=1)
         dataframe['top'] = dataframe[['open', 'close']].max(axis=1)
@@ -151,8 +140,14 @@ class BinHModWhiteHOV0(IStrategy):
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         conditions = []
 
+        # EMA protect
+        dataframe[f'ema_trend_{self.ema_trend.value}'] = ta.EMA(dataframe, timeperiod=int(self.ema_trend.value))        
+        dataframe[f'ema_slow_{self.ema_slow.value}'] = ta.EMA(dataframe, timeperiod=int(self.ema_slow.value))
+                         
+        # Elliot
+        dataframe[f'EWO_{self.ewo_base.value}_{self.ewo_step.value}'] = EWO(dataframe, (self.ewo_base.value), (self.ewo_base.value + self.ewo_step.value))
         
-        if self.protection_one.value:
+        if self.buy_protection_one.value:
         	conditions.append(
         		(
         			# Bull trend
@@ -160,7 +155,7 @@ class BinHModWhiteHOV0(IStrategy):
                 	)
                 )
                 
-        if self.protection_two.value:
+        if self.buy_protection_two.value:
         	conditions.append(
         		(
         			# Rising trend
@@ -169,7 +164,7 @@ class BinHModWhiteHOV0(IStrategy):
                 	)
                 )
                 
-        if self.protection_three.value:
+        if self.buy_protection_three.value:
         	conditions.append(
         		(
         			# EWO
