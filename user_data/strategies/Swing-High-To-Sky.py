@@ -36,7 +36,7 @@ rsiSellVal = 88
 class SwingHighToSky(IStrategy):
     INTERFACE_VERSION = 2
 
-    timeframe = '15m'
+    timeframe = '5m'
 
     stoploss = -0.34338
 
