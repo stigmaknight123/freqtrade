@@ -1,0 +1,8 @@
+NotAnotherSMAOffsetStrategy and RalliV1
+https://github.com/Juusseli/Trade
+
+NostalgiaForInfinityNext
+https://github.com/iterativv/NostalgiaForInfinity
+
+SMAOffsetV2 and 2 other strats
+https://github.com/GeorgeMurAlkh/freqtrade-stuff/tree/main/user_data/strategies
