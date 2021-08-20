@@ -6,3 +6,6 @@ https://github.com/iterativv/NostalgiaForInfinity
 
 SMAOffsetV2 and 2 other strats
 https://github.com/GeorgeMurAlkh/freqtrade-stuff/tree/main/user_data/strategies
+
+Other public strats (need to be hyperopted further before being use on live)
+https://github.com/freqtrade/freqtrade-strategies/tree/master/user_data/strategies
