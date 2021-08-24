@@ -19,11 +19,11 @@ TARGET_TRADES = 600
 # expected max profit = 3.85
 # Check that the reported Σ% values do not exceed this!
 # Note, this is ratio. 3.85 stated above means 385Σ%.
-EXPECTED_MAX_PROFIT = 3.0
+EXPECTED_MAX_PROFIT = 9 #600 * 1.5%
 
 # Max average trade duration in minutes.
 # If eval ends with higher value, we consider it a failed eval.
-MAX_ACCEPTED_TRADE_DURATION = 300
+MAX_ACCEPTED_TRADE_DURATION = 60
 
 
 class ShortTradeDurHyperOptLoss(IHyperOptLoss):
