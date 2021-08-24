@@ -12,14 +12,14 @@ from freqtrade.optimize.hyperopt import IHyperOptLoss
 
 # Set TARGET_TRADES to suit your number concurrent trades so its realistic
 # to the number of days
-TARGET_TRADES = 800
+TARGET_TRADES = 650
 
 # This is assumed to be expected avg profit * expected trade count.
 # For example, for 0.35% avg per trade (or 0.0035 as ratio) and 1100 trades,
 # expected max profit = 3.85
 # Check that the reported Σ% values do not exceed this!
 # Note, this is ratio. 3.85 stated above means 385Σ%.
-EXPECTED_MAX_PROFIT = 12 #800 * 1.5%
+EXPECTED_MAX_PROFIT = 12 #650 * 1.5%
 
 # Max average trade duration in minutes.
 # If eval ends with higher value, we consider it a failed eval.
