@@ -9,8 +9,7 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-aarch64.sh
 bash Miniconda3-py38_4.10.3-Linux-aarch64.sh
 
 # need to exit terminal and re-enter to activate base environment
-exit (or Ctrl+D)
-
+exit
 
 # install TA-Lib library first ( second half of https://mikestaszel.com/2021/01/23/install-ta-lib-on-m1/ for ARM linux)
 sudo su
@@ -29,7 +28,7 @@ git clone https://github.com/stash86/freqtrade.git
 cd freqtrade
 
 conda env create -n freqtrade-conda -f ftc.yml
-conda env create -n freqtrade-conda -f environment.yml
+# conda env create -n freqtrade-conda -f environment.yml
 conda activate freqtrade-conda
 
 python3 -m pip install --upgrade pip
