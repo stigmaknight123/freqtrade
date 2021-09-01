@@ -17,7 +17,7 @@ WIN_LOSS_WEIGHT = 2
 AVERAGE_PROFIT_WEIGHT = 5
 AVERAGE_PROFIT_THRESHOLD = 3 # 2%
 SORTINO_WEIGHT = 0.02
-TOTAL_PROFIT_WEIGHT = 18
+TOTAL_PROFIT_WEIGHT = 30
 DRAWDOWN_WEIGHT = 20
 DURATION_WEIGHT = 5
 
@@ -129,7 +129,6 @@ class GeniusLoss(IHyperOptLoss):
         drawdown_loss = max_drawdown * DRAWDOWN_WEIGHT
         duration_loss = DURATION_WEIGHT * min(trade_duration / MAX_ACCEPTED_TRADE_DURATION, 1)
 
-        result = (profit_loss + win_lose_loss + average_profit_loss + sortino_ratio_loss + drawdown_loss + duration_loss) * abs(total_profit/max_drawdown)
-        # result = profit_loss + win_lose_loss + average_profit_loss + sortino_ratio_loss + drawdown_loss + duration_loss
+        result = profit_loss + win_lose_loss + average_profit_loss + sortino_ratio_loss + drawdown_loss + duration_loss
 
         return result
