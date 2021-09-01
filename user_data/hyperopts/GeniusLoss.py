@@ -129,7 +129,7 @@ class GeniusLoss(IHyperOptLoss):
         drawdown_loss = max_drawdown * DRAWDOWN_WEIGHT
         duration_loss = DURATION_WEIGHT * min(trade_duration / MAX_ACCEPTED_TRADE_DURATION, 1)
 
-        result = (profit_loss + win_lose_loss + average_profit_loss + sortino_ratio_loss + drawdown_loss + duration_loss) * (total_profit/max_drawdown)
+        result = (profit_loss + win_lose_loss + average_profit_loss + sortino_ratio_loss + drawdown_loss + duration_loss) * abs(total_profit/max_drawdown)
         # result = profit_loss + win_lose_loss + average_profit_loss + sortino_ratio_loss + drawdown_loss + duration_loss
 
         return result
