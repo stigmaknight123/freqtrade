@@ -8,7 +8,7 @@ from freqtrade.data.btanalysis import calculate_max_drawdown
 # Sortino settings
 TARGET_TRADES = 500 #2000
 EXPECTED_MAX_PROFIT = TARGET_TRADES*0.02 #3
-MAX_ACCEPTED_TRADE_DURATION = 120 #420
+MAX_ACCEPTED_TRADE_DURATION = 60 #420
 MIN_ACCEPTED_TRADE_DURATION = 2
 
 # Loss settings
