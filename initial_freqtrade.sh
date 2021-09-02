@@ -15,12 +15,4 @@ sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/atur-binance.json
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/config-static.json
 sudo wget https://raw.githubusercontent.com/stash86/freqtrade/develop/user_data/config.json
-DIRECTORY=/logs/
-if [ ! -d "$DIRECTORY" ]; then
-  mkdir logs
-fi
-DIRECTORY=/strategies/
-if [ ! -d "$DIRECTORY" ]; then
-  mkdir strategies
-fi
-cd strategies/
+
