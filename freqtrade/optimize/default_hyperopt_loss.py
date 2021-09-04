@@ -23,7 +23,7 @@ EXPECTED_MAX_PROFIT = TARGET_TRADES * 0.02 #650 * 2%
 
 # Max average trade duration in minutes.
 # If eval ends with higher value, we consider it a failed eval.
-MAX_ACCEPTED_TRADE_DURATION = 120
+MAX_ACCEPTED_TRADE_DURATION = 60
 
 
 class ShortTradeDurHyperOptLoss(IHyperOptLoss):
