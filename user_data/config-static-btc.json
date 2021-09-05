@@ -249,7 +249,10 @@
             "FLM/BTC",
             "IRIS/BTC",
             "BLZ/BTC",
-            "DODO/BTC"
+            "DODO/BTC",
+            "CHZ/BTC",
+            "ARDR/BTC",
+            "CTXC/BTC",
         ],
         "pair_blacklist": []
     },
