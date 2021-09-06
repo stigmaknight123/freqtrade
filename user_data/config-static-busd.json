@@ -179,6 +179,8 @@
             "XEC/BUSD",
             "LRC/BUSD",
             "CHR/BUSD",
+            "ROSE/BUSD",
+            "QNT/BUSD"
         ],
         "pair_blacklist": []
     },
