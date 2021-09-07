@@ -1,7 +1,7 @@
 # tested on VM.Standard.A1.Flex with Ubuntu 20.04
 
 # Prepare VPS
-sudo su
+# sudo su
 apt update && apt -y install build-essential pkg-config libblosc-dev  libhdf5-dev libssl-dev
 
 # Install miniconda
