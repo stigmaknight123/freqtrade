@@ -28,7 +28,6 @@ git clone https://github.com/stash86/freqtrade.git
 cd freqtrade
 
 conda env create -n freqtrade-conda -f ftc.yml
-# conda env create -n freqtrade-conda -f environment.yml
 conda activate freqtrade-conda
 
 python3 -m pip install --upgrade pip
