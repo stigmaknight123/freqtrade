@@ -403,8 +403,11 @@ class RPC:
         # Doing the sum is not right - overall profit needs to be based on initial capital
         profit_all_ratio_sum = sum(profit_all_ratio) if profit_all_ratio else 0.0
         starting_balance = self._freqtrade.wallets.get_starting_balance()
-        profit_closed_ratio_fromstart = profit_closed_coin_sum / starting_balance
-        profit_all_ratio_fromstart = profit_all_coin_sum / starting_balance
+        profit_closed_ratio_fromstart = 0
+        profit_all_ratio_fromstart = 0
+        if starting_balance:
+            profit_closed_ratio_fromstart = profit_closed_coin_sum / starting_balance
+            profit_all_ratio_fromstart = profit_all_coin_sum / starting_balance
 
         profit_all_fiat = self._fiat_converter.convert_amount(
             profit_all_coin_sum,
@@ -557,7 +560,7 @@ class RPC:
                 current_rate = self._freqtrade.exchange.get_rate(
                     trade.pair, refresh=False, side="sell")
                 sell_reason = SellCheckTuple(sell_type=SellType.FORCE_SELL)
-                self._freqtrade.execute_sell(trade, current_rate, sell_reason)
+                self._freqtrade.execute_trade_exit(trade, current_rate, sell_reason)
         # ---- EOF def _exec_forcesell ----
 
         if self._freqtrade.state != State.RUNNING:
@@ -613,7 +616,7 @@ class RPC:
         stakeamount = self._freqtrade.wallets.get_trade_stake_amount(pair)
 
         # execute buy
-        if self._freqtrade.execute_buy(pair, stakeamount, price, forcebuy=True):
+        if self._freqtrade.execute_entry(pair, stakeamount, price, forcebuy=True):
             Trade.commit()
             trade = Trade.get_trades([Trade.is_open.is_(True), Trade.pair == pair]).first()
             return trade
@@ -776,7 +779,7 @@ class RPC:
         if has_content:
 
             dataframe.loc[:, '__date_ts'] = dataframe.loc[:, 'date'].view(int64) // 1000 // 1000
-            # Move open to seperate column when signal for easy plotting
+            # Move open to separate column when signal for easy plotting
             if 'buy' in dataframe.columns:
                 buy_mask = (dataframe['buy'] == 1)
                 buy_signals = int(buy_mask.sum())
