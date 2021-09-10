@@ -115,13 +115,12 @@
             "TKO/BUSD",
             "ALGO/BUSD",
             "KNC/BUSD",
-            "OCEAN/BUSD",
             "FIO/BUSD",
             "WAVES/BUSD",
             "AR/BUSD",
             "HNT/BUSD",
             "XEC/BUSD",
-            "QNT/BUSD"
+            "QNT/BUSD",
         ],
         "pair_blacklist": []
     },
