@@ -51,7 +51,6 @@
             "rateLimit": 200
         },
         "pair_whitelist": [
-            "AAVE/USDT",
             "ADA/USDT",
             "AION/USDT",
             "ALGO/USDT",
@@ -107,7 +106,6 @@
             "NEO/USDT",
             "NKN/USDT",
             "OM/USDT",
-            "OMG/USDT",
             "ONT/USDT",
             "OXT/USDT",
             "PNT/USDT",
@@ -117,11 +115,8 @@
             "REEF/USDT",
             "ROSE/USDT",
             "RUNE/USDT",
-            "RVN/USDT",
             "SAND/USDT",
-            "SKL/USDT",
             "SLP/USDT",
-            "STRAX/USDT",
             "SUPER/USDT",
             "SUSHI/USDT",
             "SXP/USDT",
