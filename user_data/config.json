@@ -44,7 +44,11 @@
         {
             "method": "VolumePairList",
             "number_assets": 60,
-            "sort_key": "quoteVolume"
+            "sort_key": "quoteVolume",
+            "min_value": 0,
+            "refresh_period": 3600,
+            "lookback_timeframe": "1h",
+            "lookback_period": 48
         },
         {"method": "AgeFilter", "min_days_listed": 30},
         {
