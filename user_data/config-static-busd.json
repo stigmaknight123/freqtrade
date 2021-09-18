@@ -51,6 +51,7 @@
         },
         "pair_whitelist": [
             "ETH/BUSD",
+            "OM/BUSD",
             "BTCST/BUSD",
             "AXS/BUSD",
             "TLM/BUSD",
