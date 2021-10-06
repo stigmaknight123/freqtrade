@@ -52,7 +52,6 @@
         "pair_whitelist": [
             "1INCH/BUSD",
             "AAVE/BUSD",
-            "ACM/BUSD",
             "ADA/BUSD",
             "ADX/BUSD",
             "AERGO/BUSD",
@@ -117,7 +116,6 @@
             "IOTA/BUSD",
             "IOTX/BUSD",
             "IQ/BUSD",
-            "JUV/BUSD",
             "KAVA/BUSD",
             "KEEP/BUSD",
             "KNC/BUSD",
