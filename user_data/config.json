@@ -43,7 +43,7 @@
     "pairlists": [
         {
             "method": "VolumePairList",
-            "number_assets": 80,
+            "number_assets": 60,
             "sort_key": "quoteVolume",
             "min_value": 0,
             "refresh_period": 3600,
@@ -69,7 +69,7 @@
         {"method": "PriceFilter", "low_price_ratio": 0.001},
         {
             "method": "VolumePairList",
-            "number_assets": 60,
+            "number_assets": 40,
             "sort_key": "quoteVolume"
         }
     ],

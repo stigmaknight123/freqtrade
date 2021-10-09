@@ -7,6 +7,8 @@ services:
     container_name: freqtrade
     volumes:
       - "./user_data:/freqtrade/user_data"
+    # ports:
+    #   - "127.0.0.1:8080:8080"
     command: >
       trade
       --logfile /freqtrade/user_data/logs/freqtrade.log
@@ -21,9 +23,11 @@ services:
     container_name: freqtrade2
     volumes:
       - "./user_data:/freqtrade/user_data"
+    ports:
+      - "127.0.0.1:8081:8081"
     command: >
       trade
-      --logfile /freqtrade/user_data/logs/freqtrade.log
+      --logfile /freqtrade/user_data/logs/freqtrade2.log
       --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
       --config /freqtrade/user_data/config.json
       --config /freqtrade/user_data/config-binance.json
