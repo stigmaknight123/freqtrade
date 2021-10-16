@@ -8,9 +8,9 @@
     "dry_run": true,
     "dry_run_wallet": 70,
     "cancel_open_orders_on_exit": false,
-    "ignore_buying_expired_candle_after" : 90,
+    "ignore_buying_expired_candle_after" : 240,
     "unfilledtimeout": {
-        "buy": 30,
+        "buy": 60,
         "sell": 10,
         "unit": "seconds"
     },

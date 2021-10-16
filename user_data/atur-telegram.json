@@ -4,7 +4,7 @@
         "token": "",
         "chat_id": "",
         "keyboard": [
-            ["/profit","/balance","/status table","/daily"],
+            ["/profit","/trades","/status table","/daily"],
             ["/performance","/logs","/show_config","/whitelist"],
             ["/reload_config","/help","/start","/stop"]
         ],
