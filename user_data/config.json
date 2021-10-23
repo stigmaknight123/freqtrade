@@ -22,7 +22,8 @@
         "trailing_stop_loss": "market",
         "stoploss": "market",
         "stoploss_on_exchange": false,
-        "stoploss_on_exchange_interval": 60
+        "stoploss_on_exchange_interval": 60,
+        "stoploss_on_exchange_limit_ratio": 0.99
     },
     "bid_strategy": {
         "price_side": "ask",
@@ -43,12 +44,12 @@
     "pairlists": [
         {
             "method": "VolumePairList",
-            "number_assets": 60,
+            "number_assets": 80,
             "sort_key": "quoteVolume",
             "min_value": 0,
-            "refresh_period": 3600,
-            "lookback_timeframe": "1h",
-            "lookback_period": 48
+            "refresh_period": 86400,
+            "lookback_timeframe": "1d",
+            "lookback_period": 7
         },
         {"method": "AgeFilter", "min_days_listed": 30},
         {
@@ -69,7 +70,7 @@
         {"method": "PriceFilter", "low_price_ratio": 0.001},
         {
             "method": "VolumePairList",
-            "number_assets": 40,
+            "number_assets": 60,
             "sort_key": "quoteVolume"
         }
     ],
